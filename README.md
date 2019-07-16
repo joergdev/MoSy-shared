@@ -1,2 +1,2 @@
-# MoSy
-MockSystem
+# MoSy-shared
+MockSystem shared libs
