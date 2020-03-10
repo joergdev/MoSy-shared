@@ -21,6 +21,10 @@ import java.util.function.Supplier;
 
 public class Utils
 {
+  public static final String DATE_FORMAT_DD_MM_YYYY = "dd.MM.yyyy";
+  public static final String DATE_FORMAT_DD_MM_YYYY_HH_MM_SS = "dd.MM.yyyy HH:mm:ss";
+  public static final String DATE_FORMAT_DD_MM_YYYY_HH_MM_SS_UNDERSCORES = "dd_MM_yyyy_HH_mm_ss";
+
   public static boolean isPositive(Number number)
   {
     return number != null && number.intValue() >= 0;
@@ -81,7 +85,7 @@ public class Utils
 
   public static Integer asInteger(String str)
   {
-    return str == null
+    return isEmpty(str)
         ? null
         : Integer.valueOf(str);
   }
@@ -161,7 +165,7 @@ public class Utils
   {
     if (ld != null)
     {
-      return localDateTimeToString(ld.atStartOfDay(), "dd.MM.yyyy");
+      return localDateTimeToString(ld.atStartOfDay(), DATE_FORMAT_DD_MM_YYYY);
     }
 
     return null;
@@ -171,7 +175,7 @@ public class Utils
   {
     if (ld != null)
     {
-      return localDateTimeToString(ld, "dd.MM.yyyy HH:mm:ss");
+      return localDateTimeToString(ld, DATE_FORMAT_DD_MM_YYYY_HH_MM_SS);
     }
 
     return null;
@@ -211,7 +215,7 @@ public class Utils
     // so for years < 1900 go along with String format/parse.
     if (ldt != null && ldt.getYear() < 1900)
     {
-      ldt = cnvString2LocalDateTime(formatDate(date, "dd.MM.yyyy HH:mm:ss"));
+      ldt = cnvString2LocalDateTime(formatDate(date, DATE_FORMAT_DD_MM_YYYY_HH_MM_SS));
     }
 
     return ldt;
@@ -225,7 +229,7 @@ public class Utils
    */
   public static LocalDateTime cnvString2LocalDateTime(String value)
   {
-    return cnvString2LocalDateTime(value, "dd.MM.yyyy HH:mm:ss");
+    return cnvString2LocalDateTime(value, DATE_FORMAT_DD_MM_YYYY_HH_MM_SS);
   }
 
   /**
@@ -253,7 +257,7 @@ public class Utils
     // so for years < 1900 go along with String format/parse.
     if (ldt.getYear() < 1900)
     {
-      return parseDate(formatLocalDateTime(ldt), "dd.MM.yyyy HH:mm:ss", true);
+      return parseDate(formatLocalDateTime(ldt), DATE_FORMAT_DD_MM_YYYY_HH_MM_SS, true);
     }
     else
     {
@@ -274,7 +278,7 @@ public class Utils
       return null;
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_DD_MM_YYYY_HH_MM_SS);
 
     return localDateTime.format(formatter);
   }
