@@ -1,8 +1,12 @@
 package com.github.joergdev.mosy.shared;
 
+import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,8 +20,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Supplier;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 public class Utils
 {
@@ -333,6 +350,222 @@ public class Utils
       else
       {
         return null;
+      }
+    }
+  }
+
+  public static Map<String, Object> xmlToMap(String xml)
+  {
+    try
+    {
+      Document doc = getDocumentFromInputString(xml);
+
+      Map<String, Object> map = new HashMap<>();
+
+      nodeToMap(doc.getDocumentElement(), map);
+
+      return map;
+    }
+    catch (Exception ex)
+    {
+      throw new IllegalStateException(ex);
+    }
+  }
+
+  private static void nodeToMap(Node node, Map<String, Object> map)
+  {
+    String name = node.getNodeName();
+    String content = node.getTextContent();
+
+    List<Node> childNodes = getChildNodes(node);
+
+    // dont transfer empty nodes
+    if (!childNodes.isEmpty() || !Utils.isEmpty(content))
+    {
+      if (childNodes.isEmpty())
+      {
+        map.put(name, content);
+      }
+      else
+      {
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> listForTag = (List<Map<String, Object>>) map.get(name);
+        if (listForTag == null)
+        {
+          listForTag = new ArrayList<>();
+          map.put(name, listForTag);
+        }
+
+        Map<String, Object> subMap = new HashMap<>();
+        listForTag.add(subMap);
+
+        childNodes.forEach(c -> nodeToMap(c, subMap));
+      }
+    }
+  }
+
+  private static List<Node> getChildNodes(Node rootNode)
+  {
+    List<Node> nodes = new ArrayList<>();
+
+    org.w3c.dom.NodeList nl = rootNode.getChildNodes();
+
+    for (int x = 0; x < nl.getLength(); x++)
+    {
+      Node n = nl.item(x);
+
+      if (isRelevantNode(n))
+      {
+        nodes.add(n);
+      }
+    }
+
+    return nodes;
+  }
+
+  private static boolean isRelevantNode(Node n)
+  {
+    if (Node.ELEMENT_NODE == n.getNodeType())
+    {
+      return true;
+    }
+    // TEXT_NODE -> false
+
+    return false;
+  }
+
+  public static Document getDocumentFromInputString(String xml)
+    throws Exception
+  {
+    Charset charset = getCharsetFromXml(xml);
+
+    byte[] bytes = charset == null
+        ? xml.getBytes()
+        : xml.getBytes(charset);
+
+    return getDocumentFromInputStream(() -> new ByteArrayInputStream(bytes));
+  }
+
+  private static Charset getCharsetFromXml(String xml)
+  {
+    try
+    {
+      XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
+          .createXMLStreamReader(new StringReader(xml));
+
+      String charsetStr = xmlStreamReader.getCharacterEncodingScheme();
+
+      return Utils.isEmpty(charsetStr)
+          ? null
+          : Charset.forName(charsetStr);
+    }
+    catch (Exception ex)
+    {
+      throw new IllegalStateException(ex);
+    }
+  }
+
+  private static Document getDocumentFromInputStream(Supplier<InputStream> isSupplier)
+    throws Exception
+  {
+    try (InputStream is2 = isSupplier.get())
+    {
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+      Document doc = dBuilder.parse(is2);
+
+      // opt. but recommended
+      doc.getDocumentElement().normalize();
+
+      return doc;
+    }
+  }
+
+  public static String map2xml(Map<?, ?> map, boolean addType)
+  {
+    org.jdom.Document document = new org.jdom.Document();
+    Element root = new Element("Map");
+
+    map2xml(map, root, addType);
+
+    document.setContent(root);
+
+    return new XMLOutputter(Format.getPrettyFormat()).outputString(document);
+  }
+
+  private static void map2xml(Map<?, ?> map, Element parent, boolean addType)
+  {
+    for (Entry<?, ?> entry : map.entrySet())
+    {
+      Object key = entry.getKey();
+      Object value = entry.getValue();
+
+      if (value != null)
+      {
+        if (value instanceof Collection)
+        {
+          Collection<?> col = (Collection<?>) value;
+          for (Object colValue : col)
+          {
+            addChildNode(parent, key, colValue, addType);
+          }
+        }
+        else
+        {
+          addChildNode(parent, key, value, addType);
+        }
+      }
+    }
+  }
+
+  private static void addChildNode(Element parent, Object key, Object value, boolean addType)
+  {
+    if (value != null)
+    {
+      Element child = new Element(key.toString());
+
+      if (value instanceof Map)
+      {
+        map2xml((Map<?, ?>) value, child, addType);
+
+        if (!child.getChildren().isEmpty())
+        {
+          parent.addContent(child);
+        }
+      }
+      else
+      {
+        String textValue = value.toString();
+
+        // special format for date for readability
+        if (value instanceof java.util.Date)
+        {
+          DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+          textValue = df.format(value);
+        }
+        else if (value instanceof LocalDate)
+        {
+          LocalDate lD = (LocalDate) value;
+          textValue = lD.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        }
+        else if (value instanceof LocalDateTime)
+        {
+          LocalDateTime lDT = (LocalDateTime) value;
+          textValue = lDT.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+        }
+        else if (value instanceof LocalTime)
+        {
+          LocalTime lT = (LocalTime) value;
+          textValue = lT.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        }
+
+        if (addType)
+        {
+          child.setAttribute("type", value.getClass().getName());
+        }
+
+        child.setText(textValue);
+        parent.addContent(child);
       }
     }
   }
