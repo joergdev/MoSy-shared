@@ -58,4 +58,25 @@ public class UtilsTest
 
     assertEquals(bui.toString(), xml.replace("\r\n", ""));
   }
+
+  @Test
+  public void test()
+  {
+    String xmlUnformatted = "<Map><SingleVal>1</SingleVal>  <listMap  ><SingleValMapInList>10</SingleValMapInList></listMap><list>5</list>    </Map>";
+
+    String xmlFormatted = Utils.formatXml(xmlUnformatted);
+
+    System.out.println(xmlFormatted);
+
+    StringBuilder bui = new StringBuilder();
+    bui.append("<Map>").append("\r\n");
+    bui.append("  <SingleVal>1</SingleVal>").append("\r\n");
+    bui.append("  <listMap>").append("\r\n");
+    bui.append("    <SingleValMapInList>10</SingleValMapInList>").append("\r\n");
+    bui.append("  </listMap>").append("\r\n");
+    bui.append("  <list>5</list>").append("\r\n");
+    bui.append("</Map>").append("\r\n");
+
+    assertEquals(bui.toString(), xmlFormatted);
+  }
 }

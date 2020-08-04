@@ -1,8 +1,10 @@
 package com.github.joergdev.mosy.shared;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,11 +32,18 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 public class Utils
 {
@@ -567,6 +576,43 @@ public class Utils
         child.setText(textValue);
         parent.addContent(child);
       }
+    }
+  }
+
+  public static String formatXml(String xml)
+  {
+    if (isEmpty(xml))
+    {
+      return null;
+    }
+
+    InputStream isXML = null;
+    OutputStream osXML = null;
+
+    try
+    {
+      Transformer serializer = TransformerFactory.newInstance().newTransformer();
+      serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+      serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+      serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+      isXML = new ByteArrayInputStream(xml.replace(" ", "").replace("\n", "").replace("\r", "").getBytes());
+      Source xmlSource = new SAXSource(new InputSource(isXML));
+
+      osXML = new ByteArrayOutputStream();
+      StreamResult res = new StreamResult(osXML);
+
+      serializer.transform(xmlSource, res);
+
+      return new String(((ByteArrayOutputStream) res.getOutputStream()).toByteArray());
+    }
+    catch (Exception ex)
+    {
+      throw new IllegalStateException(ex);
+    }
+    finally
+    {
+      safeClose(isXML, osXML);
     }
   }
 }
