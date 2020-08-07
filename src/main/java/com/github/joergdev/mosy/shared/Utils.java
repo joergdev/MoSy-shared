@@ -1,11 +1,10 @@
 package com.github.joergdev.mosy.shared;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -33,17 +32,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 
 public class Utils
 {
@@ -586,25 +583,28 @@ public class Utils
       return null;
     }
 
-    InputStream isXML = null;
-    OutputStream osXML = null;
+    StringWriter writer = null;
 
     try
     {
-      Transformer serializer = TransformerFactory.newInstance().newTransformer();
-      serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-      serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-      serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+      transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
-      isXML = new ByteArrayInputStream(xml.replace(" ", "").replace("\n", "").replace("\r", "").getBytes());
-      Source xmlSource = new SAXSource(new InputSource(isXML));
+      writer = new StringWriter();
+      StreamResult result = new StreamResult(writer);
 
-      osXML = new ByteArrayOutputStream();
-      StreamResult res = new StreamResult(osXML);
+      transformer.transform(new DOMSource(getDocumentFromInputString(xml)), result);
 
-      serializer.transform(xmlSource, res);
+      String xmlFormatted = writer.toString();
 
-      return new String(((ByteArrayOutputStream) res.getOutputStream()).toByteArray());
+      if (xml.startsWith("<?xml"))
+      {
+        xmlFormatted = xml.substring(0, xml.indexOf("?>") + 2) + "\r\n" + xmlFormatted;
+      }
+
+      return xmlFormatted;
     }
     catch (Exception ex)
     {
@@ -612,7 +612,7 @@ public class Utils
     }
     finally
     {
-      safeClose(isXML, osXML);
+      safeClose(writer);
     }
   }
 }

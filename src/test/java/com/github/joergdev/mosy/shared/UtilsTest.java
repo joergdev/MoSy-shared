@@ -60,9 +60,10 @@ public class UtilsTest
   }
 
   @Test
-  public void test()
+  public void testFormatXml()
+    throws Exception
   {
-    String xmlUnformatted = "<Map><SingleVal>1</SingleVal>  <listMap  ><SingleValMapInList>10</SingleValMapInList></listMap><list>5</list>    </Map>";
+    String xmlUnformatted = "<Map><SingleVal>1</SingleVal><listMap  ><SingleValMapInList>10</SingleValMapInList></listMap><list>5</list></Map>";
 
     String xmlFormatted = Utils.formatXml(xmlUnformatted);
 
@@ -76,6 +77,26 @@ public class UtilsTest
     bui.append("  </listMap>").append("\r\n");
     bui.append("  <list>5</list>").append("\r\n");
     bui.append("</Map>").append("\r\n");
+
+    assertEquals(bui.toString(), xmlFormatted);
+
+    // second testcase
+    xmlUnformatted = "<?xml version=\"1.0\" ?><S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"><S:Body><ns2:testMethod xmlns:ns2=\"http://services.test.mosy.joergdev.github.com/\"><action>2</action></ns2:testMethod></S:Body></S:Envelope>";
+
+    xmlFormatted = Utils.formatXml(xmlUnformatted);
+
+    System.out.println(xmlFormatted);
+
+    bui = new StringBuilder();
+    bui.append("<?xml version=\"1.0\" ?>").append("\r\n");
+    bui.append("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">").append("\r\n");
+    bui.append("  <S:Body>").append("\r\n");
+    bui.append("    <ns2:testMethod xmlns:ns2=\"http://services.test.mosy.joergdev.github.com/\">")
+        .append("\r\n");
+    bui.append("      <action>2</action>").append("\r\n");
+    bui.append("    </ns2:testMethod>").append("\r\n");
+    bui.append("  </S:Body>").append("\r\n");
+    bui.append("</S:Envelope>").append("\r\n");
 
     assertEquals(bui.toString(), xmlFormatted);
   }
