@@ -70,6 +70,13 @@ public class Utils
     return col == null || col.isEmpty();
   }
 
+  public static String nvl(String s)
+  {
+    return s == null
+        ? ""
+        : s;
+  }
+
   public static <T> T nvl(T t1, T t2)
   {
     return t1 == null
