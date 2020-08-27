@@ -1,5 +1,5 @@
 <html>
-<h3>Inhaltsverzeichnis</h3>
+<h3>Contents</h3>
 <a href="#a1">Features</a><br/>
 <a href="#a2">Login</a><br/>
 <a href="#a3">Main - Basedata</a><br/>
