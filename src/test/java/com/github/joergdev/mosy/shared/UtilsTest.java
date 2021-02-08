@@ -76,7 +76,7 @@ public class UtilsTest
     bui.append("    <SingleValMapInList>10</SingleValMapInList>").append("\r\n");
     bui.append("  </listMap>").append("\r\n");
     bui.append("  <list>5</list>").append("\r\n");
-    bui.append("</Map>").append("\r\n");
+    bui.append("</Map>");
 
     assertEquals(bui.toString(), xmlFormatted);
 
@@ -96,8 +96,17 @@ public class UtilsTest
     bui.append("      <action>2</action>").append("\r\n");
     bui.append("    </ns2:testMethod>").append("\r\n");
     bui.append("  </S:Body>").append("\r\n");
-    bui.append("</S:Envelope>").append("\r\n");
+    bui.append("</S:Envelope>");
 
     assertEquals(bui.toString(), xmlFormatted);
+
+    // third testcase
+    xmlUnformatted = "<return>m_one_m</return>";
+
+    xmlFormatted = Utils.formatXml(xmlUnformatted);
+
+    System.out.println(xmlFormatted);
+
+    assertEquals(xmlUnformatted, xmlFormatted);
   }
 }

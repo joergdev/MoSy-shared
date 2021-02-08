@@ -120,6 +120,13 @@ public class Utils
         : Integer.valueOf(str);
   }
 
+  public static String asString(Integer i)
+  {
+    return i == null
+        ? null
+        : String.valueOf(i);
+  }
+
   public static void safeClose(Closeable... closeables)
   {
     if (closeables != null)
@@ -583,7 +590,7 @@ public class Utils
     }
   }
 
-  public static String formatXml(String xml)
+  public static String formatXml(final String xml)
   {
     if (isEmpty(xml))
     {
@@ -609,6 +616,11 @@ public class Utils
       if (xml.startsWith("<?xml"))
       {
         xmlFormatted = xml.substring(0, xml.indexOf("?>") + 2) + "\r\n" + xmlFormatted;
+      }
+
+      if (xmlFormatted.endsWith("\r\n") && !xml.endsWith("\r\n"))
+      {
+        xmlFormatted = xmlFormatted.substring(0, xmlFormatted.length() - 2);
       }
 
       return xmlFormatted;
