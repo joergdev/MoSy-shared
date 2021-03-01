@@ -1,4 +1,4 @@
-package com.github.joergdev.mosy.shared;
+package de.joergdev.mosy.shared;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
