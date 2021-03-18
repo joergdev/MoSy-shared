@@ -1,4 +1,4 @@
-package com.github.joergdev.mosy.shared;
+package de.joergdev.mosy.shared;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;

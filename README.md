@@ -15,63 +15,68 @@
 <a href="#a13">Main / Interface-method - Upload mockdata</a><br/>
 <a href="#a14">Interface - Method - Recordconfigs</a><br/>
 <a href="#a15">Interface - Method - Recordconfig</a><br/>
-<a href="#a16">Main - Mocksessions</a><br/>
-<a href="#a17">API-Client</a><br/>
-<a href="#a18">Property files</a><br/>
-<a href="#a19">Runtime environments – Spring Boot</a><br/>
-<a href="#a20">Runtime environments – JEE ApplicationServer (JBoss / Wildfly)</a><br/>
+<a href="#a16">Main - Mockprofiles</a><br/>
+<a href="#a17">Mockprofile</a><br/>
+<a href="#a18">API-Client</a><br/>
+<a href="#a19">Property files</a><br/>
+<a href="#a20">Runtime environments – Spring Boot</a><br/>
+<a href="#a21">Runtime environments – JEE ApplicationServer (JBoss / Wildfly)</a><br/>
  
 <br/><br/><br/>
 <a name="a1"/>
 <p><strong><u>Features</u></strong></p>
 <ul>
 <li>Mock all kind of interfaces
-<ul>
-<li>SOAP</li>
-<li>REST*</li>
-<li>CUSTOM (XML / JSON / OTHER)
-<ul>
-<li>(Requires some implementation in calling software)</li>
-<li>Examples: MQ-Interfaces, RMI-Interfaces, Native-Interfaces, &hellip;</li>
-</ul>
+	<ul>
+		<li>SOAP</li>
+		<li>REST*</li>
+		<li>CUSTOM (XML / JSON / OTHER)
+			<ul>
+				<li>(Requires some implementation in calling software)</li>
+				<ul><li>Predefined abstract class - see class AbstractCustomMockImpl (javadoc)</li></ul>
+				<li>Examples: MQ-Interfaces, RMI-Interfaces, Native-Interfaces, &hellip;</li>
+			</ul>
+		</li>
+		<li>Configurable global, for interface or only for method</li>
+	</ul>
 </li>
-<li>Configurable global, for interface or only for method</li>
-</ul>
-</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+
+<br/><br/>
+
 <li>Record calls and use as mockdata
-<ul>
-<li>Configurable global, for interface, for method oder only on defined requests</li>
-</ul>
+	<ul>
+		<li>Configurable global, for interface, for method oder only on defined requests</li>
+		<li>Possibilty to define recordsession for separated records</li>
+	</ul>
 </li>
-</ul>
-<p>&nbsp;</p>
-<ul>
-<li>Possibilty to define mocksessions with isolated mockdata
-<ul>
-<li>Can be used for&hellip;
-<ul>
-<li>automatic tests for example where some tests needs different interface behavior by having same input data</li>
-<li>(developer) tests wihout side effects to others</li>
-</ul>
+
+<br/><br/>
+
+<li>Possibilty to define mockprofiles with isolated mockdata
+	<ul>
+		<li>Can be used for&hellip;
+			<ul>
+				<li>automatic tests for example where some tests needs different interface behavior by having same input data</li>
+				<li>(developer) tests wihout side effects to others</li>
+			</ul>
+		</li>
+	</ul>
 </li>
-</ul>
-</li>
-</ul>
-<p>&nbsp;</p>
-<ul>
+
+<br/><br/>
+
 <li>Open Rest API
-<ul>
-<li>Only one public API, used by webfronted as well</li>
-</ul>
+	<ul>
+		<li>Only one public API, used by webfronted as well</li>
+	</ul>
 </li>
+
+<br/><br/>
+
+<li>Runable as spring-boot-app (standalone, within container) or as JEE app.</li>
+
 </ul>
-<p>&nbsp;</p>
-<ul>
-<li>Runable as spring-boot-app (standalone, within container) or as jee app.</li>
-</ul>
+
 <br/><br/>
 <p><em>REST* = Mock and record for REST Interfaces ist not yet supported</em>.</p>
 <br/><br/><br/><br/><br/><br/>
@@ -109,7 +114,7 @@
 <ul>
 <li>Reset all config to default (&bdquo;On startup&ldquo;)</li>
 <li>Reset count calls</li>
-<li>Delete temporary data (currently only mocksessions)</li>
+<li>Delete temporary data (non persistent mockprofiles and recordsessions)</li>
 </ul>
 </li>
 </ul>
@@ -258,9 +263,9 @@
 <p><strong><u>Interface - Method- Mockdata overview</u></strong></p>
 <img src="doc/method_mockdata.png" />
 <ul>
-<li>Mocksession
+<li>Mockprofiles
 <ul>
-<li>Set if mockdata assigned (see chapter for mocksession)</li>
+<li>Set if mockprofile(s) assigned (see chapter for mockprofile)</li>
 </ul>
 </li>
 <li>Title</li>
@@ -278,18 +283,21 @@
 <p><strong><u>Interface - Method- Mockdata</u></strong></p>
 <img src="doc/mockdata.png" />
 <ul>
-<li>Mocksession
+<li>Mockprofiles (Table)
 <ul>
 <li>(Optional)</li>
-<li>Assigned mockdata (see chapter for mocksession)</li>
+<li>Assigned mockprofile(s) (see chapter for mockprofile)</li>
 </ul>
 </li>
 <li>Title</li>
 <li>Active</li>
+<li>Common (Use for assingned mockprofiles and / or global)</li>
 <li>Request</li>
 <li>Response</li>
 <li>Created</li>
 <li>Count calls</li>
+<br/>
+<li>Hashcode of request und response gets saved</li>
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
@@ -342,10 +350,25 @@
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a11"/>
+<p><strong><u>Main &ndash; Recordsessions</u></strong></p>
+<img src="doc/main_recordsessions.png" />
+<ul>
+<li>Overview of all recordsessions with possibilty to create new or delete.</li>
+<br/>
+<li>ID</li>
+<li>Created</li>
+</ul>
+<br/><br/><br/><br/><br/><br/>
+
+
+<a name="a11"/>
 <p><strong><u>Main &ndash; Records</u></strong></p>
 <img src="doc/main_records.png" />
 <ul>
 <li>Overview of all records with possibilty to download, use as mockdata, show or delete.</li>
+<br/>
+<li>Filter Recordsession (optional)</li>
+<br/>
 <li>Interface</li>
 <li>Method</li>
 <li>Created</li>
@@ -371,6 +394,7 @@
 <p><strong><u>Main - Record</u></strong></p>
 <img src="doc/record.png" />
 <ul>
+<li>Recordsession</li>
 <li>Interface</li>
 <li>Method</li>
 <li>Created</li>
@@ -439,21 +463,35 @@
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a16"/>
-<p><strong><u>Main - Mocksessions</u></strong></p>
-<img src="doc/mocksessions.png" />
+<p><strong><u>Main - Mockprofiles</u></strong></p>
+<img src="doc/mockprofiles.png" />
 <ul>
-<li>ID</li>
-<li>Created</li>
+<li>Name</li>
+<li>Persistent</li>
+<li>Use common mocks</li>
+<br/>
+<li>On delete all non common mockdata assigned to only this mockprofile get deleted too</li>
 </ul>
 <br/><br/>
 <p><u>Usage (mockdata)</u></p>
-<img src="doc/mocksession_usage_mockdata.png" />
+<img src="doc/mockprofile_usage_mockdata.png" />
 <ul>
-<li>Mockdata is only valid for requests with mocksession-id 41</li>
+<li>Mockdata is only valid for requests with defined mockprofile(s)</li>
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a17"/>
+<p><strong><u>Mockprofile</u></strong></p>
+<img src="doc/mockprofile.png" />
+<ul>
+<li>Name</li>
+<li>Persistent (if false delete on system boot)</li>
+<li>Use common mocks (if true use global mocks)</li>
+<li>Description</li>
+</ul>
+<br/><br/><br/><br/><br/><br/>
+
+<a name="a18"/>
 <p><strong><u>API-Client</u></strong></p>
 <ul>
 <li>Lets you integrate MoSy easily into your apps and your processes</li>
@@ -466,12 +504,11 @@
 </ul>
 <br/>
 <img src="doc/api_client.png" />
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Methods with green border are most relevant for integration</em></p>
 </li>
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a18"/>
+<a name="a19"/>
 <p><strong><u>Property files</u></strong></p>
 <ul>
 <li>Backend
@@ -522,7 +559,7 @@
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a19"/>
+<a name="a20"/>
 <p><strong><u>Runtime environments &ndash; Spring Boot</u></strong></p>
 <p>Spring-boot Version: 2.1.3.RELEASE</p>
 <br/>
@@ -561,7 +598,7 @@
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a20"/>
+<a name="a21"/>
 <p><strong><u>Runtime environments &ndash; JEE ApplicationServer (JBoss / Wildfly)</u></strong></p>
 <p>Tested and runnable with JBoss EAP 7.1.6 (JEE 7) with JDK8.</p>
 <br/>
@@ -574,7 +611,7 @@
 <li>xml</li>
 <li>jboss-deployment-structure.xml
 <ul>
-<li>Add dependent module &bdquo;com.github.joergdev.mosy-backend&ldquo; for externalizing properties</li>
+<li>Add dependent module &bdquo;de.joergdev.mosy-backend&ldquo; for externalizing properties</li>
 </ul>
 </li>
 <li>web.xml</li>
@@ -594,7 +631,7 @@
 <li>xml</li>
 <li>jboss-deployment-structure.xml
 <ul>
-<li>Add dependent modules &bdquo;com.github.joergdev.mosy-api-client&ldquo; and &bdquo;com.github.joergdev.mosy-frontend&ldquo; for externalizing properties</li>
+<li>Add dependent modules &bdquo;de.joergdev.mosy-api-client&ldquo; and &bdquo;de.joergdev.mosy-frontend&ldquo; for externalizing properties</li>
 </ul>
 </li>
 <li>web.xml

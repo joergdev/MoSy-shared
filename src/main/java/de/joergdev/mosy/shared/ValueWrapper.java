@@ -1,4 +1,4 @@
-package com.github.joergdev.mosy.shared;
+package de.joergdev.mosy.shared;
 
 public class ValueWrapper<T>
 {
