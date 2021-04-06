@@ -53,6 +53,25 @@ public class Utils
     return number != null && number.intValue() >= 0;
   }
 
+  public static boolean isNumeric(String str)
+  {
+    if (str != null && !str.trim().isEmpty())
+    {
+      try
+      {
+        Long.valueOf(str);
+
+        return true;
+      }
+      catch (Exception exDontCare)
+      {
+
+      }
+    }
+
+    return false;
+  }
+
   public static boolean isEmpty(String str)
   {
     return str == null || str.trim().isEmpty();
