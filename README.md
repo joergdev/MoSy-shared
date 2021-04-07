@@ -526,7 +526,7 @@
 <ul>
 <li>api_endpoint
 <ul>
-<li>Default = <a href="http://localhost:3911/mosy/api/v_2_0">http://localhost:3911/mosy/api/v_2_0</a></li>
+<li>Default = <a href="http://localhost:3911/mosy/api/v_2_1">http://localhost:3911/mosy/api/v_2_1</a></li>
 </ul>
 </li>
 <li>properties</li>
