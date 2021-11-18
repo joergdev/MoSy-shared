@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -478,9 +479,13 @@ public class Utils
   {
     Charset charset = getCharsetFromXml(xml);
 
-    byte[] bytes = charset == null
-        ? xml.getBytes()
-        : xml.getBytes(charset);
+    // Default = UTF-8
+    if (charset == null)
+    {
+      charset = StandardCharsets.UTF_8;
+    }
+
+    byte[] bytes = xml.getBytes(charset);
 
     return getDocumentFromInputStream(() -> new ByteArrayInputStream(bytes));
   }
