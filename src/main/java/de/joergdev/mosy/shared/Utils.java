@@ -37,9 +37,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -527,7 +527,7 @@ public class Utils
 
   public static String map2xml(Map<?, ?> map, boolean addType)
   {
-    org.jdom.Document document = new org.jdom.Document();
+    org.jdom2.Document document = new org.jdom2.Document();
     Element root = new Element("Map");
 
     map2xml(map, root, addType);
