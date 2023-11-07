@@ -28,12 +28,12 @@
 <ul>
 <li>Mock all kind of interfaces
 	<ul>
+		<li>REST</li>
 		<li>SOAP</li>
-		<li>REST*</li>
 		<li>CUSTOM (XML / JSON / OTHER)
 			<ul>
 				<li>(Requires some implementation in calling software)</li>
-				<ul><li>Predefined abstract class - see class AbstractCustomMockImpl (javadoc)</li></ul>
+				<ul><li>Predefined abstract class - see class <a href="https://github.com/joergdev/MoSy-API-client/blob/master/src/main/java/de/joergdev/mosy/api/client/AbstractCustomMockImpl.java">AbstractCustomMockImpl</a> (javadoc)</li></ul>
 				<li>Examples: MQ-Interfaces, RMI-Interfaces, Native-Interfaces, &hellip;</li>
 			</ul>
 		</li>
@@ -77,8 +77,6 @@
 
 </ul>
 
-<br/><br/>
-<p><em>REST* = Mock and record for REST Interfaces ist not yet supported</em>.</p>
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a2"/>
@@ -161,6 +159,8 @@
 
 <a name="a5"/>
 <p><strong><u>Interface &ndash; Interface data</u></strong></p>
+<p><em>REST</em></p>
+<img src="doc/ifc_data_rest.png" />
 <p><em>SOAP</em></p>
 <img src="doc/ifc_data_soap.png" />
 <p><em>CUSTOM</em></p>
@@ -169,12 +169,13 @@
 <li>Name</li>
 <li>Type
 <ul>
-<li>SOAP / REST* / CUSTOM_XML / CUSTOM_JSON / CUSTOM_PLAIN</li>
+<li>REST / SOAP / CUSTOM_XML / CUSTOM_JSON / CUSTOM_PLAIN</li>
 </ul>
 </li>
 <li>Service path
 <ul>
-<li>SOAP: TODO DESC</li>
+<li>REST: HTTP (base)path</li>
+<li>SOAP: Service endpoint (in most cases equal to service name)</li>
 <li>CUSTOM(XML/JSON/PLAIN): NOT visible</li>
 </ul>
 </li>
@@ -240,8 +241,14 @@
 <li>Name</li>
 <li>Service path
 <ul>
-<li>SOAP: TODO DESC</li>
+<li>REST: HTTP (sub)path, may be empty</li>
+<li>SOAP: Root XML tag name, may not be empty</li>
 <li>CUSTOM(XML/JSON/PLAIN): NOT visible</li>
+</ul>
+</li>
+<li>HTTP method
+<ul>
+<li>Only visible for REST Services</li>
 </ul>
 </li>
 <li>Mock active
