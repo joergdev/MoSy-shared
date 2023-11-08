@@ -124,7 +124,7 @@
 <ul>
 <li>Tree
 <ul>
-<li>Overview of interfaces grouped by type (SOAP / REST* / CUSTOM)</li>
+<li>Overview of interfaces grouped by type (SOAP / REST / CUSTOM)</li>
 <li>Left click on single interface =&gt; Show / Edit</li>
 </ul>
 </li>
@@ -316,7 +316,7 @@
 <li>Change Endpoint (<a href="http://real-endpoint/XyzService">http://real-endpoint/XyzService</a>) to <a href="http://mosy_base_url/soap/XyzService">http://mosy_base_url/soap/XyzService</a></li>
 </ul>
 </li>
-<li>REST*
+<li>REST
 <ul>
 <li>Change Endpoint (<a href="http://real-endpoint/resource/id">http://real-endpoint/resource/id</a>) to <a href="http://mosy_base_url/rest/resource/id">http://mosy_base_url/rest/resource/id</a></li>
 </ul>
@@ -518,141 +518,131 @@
 <a name="a19"/>
 <p><strong><u>Property files</u></strong></p>
 <ul>
-<li>Backend
-<ul>
-<li>properties
-<ul>
-<li>login_secret
-<ul>
-<li>Default = &bdquo;m0sy&ldquo;</li>
-</ul>
+<li>mosy-backend
+  <ul>
+    <li>mosy_backend.properties
+      <ul>
+        <li>login_secret
+          <ul>
+            <li>Default = &bdquo;m0sy&ldquo;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </li>
-<li>Api-client
-<ul>
-<li>properties
-<ul>
-<li>api_endpoint
-<ul>
-<li>Default = <a href="http://localhost:3911/mosy/api/v_2_1">http://localhost:3911/mosy/api/v_2_1</a></li>
-</ul>
+<li>mosy-api-client
+  <ul>
+    <li>mosy_api_client.properties
+      <ul>
+        <li>api_endpoint
+          <ul>
+            <li>Default = <a href="http://localhost:3911/mosy/api/v_2_1">http://localhost:3911/mosy/api/v_2_1</a></li>
+          </ul>
+         </li>
+      </ul>
+    </li>
+  </ul>
 </li>
-<li>properties</li>
-</ul>
+<li>mosy-frontend
+  <ul>
+    <li>mosy_frontend.properties
+      <ul>
+        <li>upload_mockdata_singlemode
+          <ul>
+            <li>Defaultvalue = &bdquo;false&ldquo;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </li>
-<li>Frontend
-<ul>
-<li>properties
-<ul>
-<li>upload_mockdata_singlemode
-<ul>
-<li>Defaultvalue = &bdquo;false&ldquo;</li>
-</ul>
-</li>
-<li>properties</li>
-<li>properties</li>
-<li>properties</li>
-<li>properties</li>
-<li>properties</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a20"/>
 <p><strong><u>Runtime environments &ndash; Spring Boot</u></strong></p>
-<p>Spring-boot Version: 2.1.3.RELEASE</p>
+<p>Spring-boot Version: 2.7.8</p>
 <br/>
 <p><u>Projects:</u></p>
 <ul>
-<li>mosy-backend-standalone
-<ul>
-<li>Properties
-<ul>
-<li>META-INF/persistence.xml</li>
-<li>properties
-<ul>
-<li>Port: 3911</li>
-</ul>
-</li>
-<li>xml</li>
-</ul>
-</li>
-<li>mosy-frontend-standalone
-<ul>
-<li>Properties
-<ul>
-<li>META-INF/faces-config.xml</li>
-<li>properties
-<ul>
-<li>Port: 8087</li>
-</ul>
-</li>
-<li>xml</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+  <li>mosy-backend-standalone
+    <ul>
+      <li>Properties
+        <ul>
+          <li>META-INF/persistence.xml</li>
+            <li>application.properties
+              <ul>
+                <li>server.port: 3911</li>
+              </ul>
+            </li>
+            <li>log4j.xml</li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>mosy-frontend-standalone
+    <ul>
+      <li>Properties
+        <ul>
+          <li>META-INF/faces-config.xml</li>
+          <li>application.properties
+            <ul>
+              <li>server.port: 8087</li>
+            </ul>
+          </li>
+          <li>log4j.xml</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a21"/>
 <p><strong><u>Runtime environments &ndash; JEE ApplicationServer (JBoss / Wildfly)</u></strong></p>
-<p>Tested and runnable with JBoss EAP 7.1.6 (JEE 7) with JDK8.</p>
+<p>Tested and runnable with JBoss EAP 7.4.10 (JEE 7) with JDK8.</p>
 <br/>
 <p><u>Projects:</u></p>
 <ul>
 <li>mosy-backend-war
-<ul>
-<li>Properties (&hellip;/WEB-INF/)
-<ul>
-<li>xml</li>
-<li>jboss-deployment-structure.xml
-<ul>
-<li>Add dependent module &bdquo;de.joergdev.mosy-backend&ldquo; for externalizing properties</li>
-</ul>
-</li>
-<li>web.xml</li>
-</ul>
+  <ul>
+    <li>Properties
+      <ul>
+        <li>log4j.xml</li>
+        <li>META-INF/persistence.xml</li>
+        <li>WEB-INF/jboss-deployment-structure.xml
+          <ul>
+            <li>Add dependent module &bdquo;de.joergdev.mosy-backend&ldquo; for externalizing properties</li>
+          </ul>
+        </li>
+        <li>jboss-web.xml
+          <ul>
+            <li>context-root: /</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </li>
 <li>mosy-frontend-war
-<ul>
-<li>Properties
-<ul>
-<li>&hellip;/META_INF/
-<ul>
-<li>faces-config.xml</li>
-</ul>
+  <ul>
+    <li>Properties
+      <ul>
+        <li>log4j.xml</li>
+        <li>META-INF/faces-config.xml</li>
+        <li>WEB-INF/jboss-deployment-structure.xml
+          <ul>
+            <li>Add dependent modules &bdquo;de.joergdev.mosy-api-client&ldquo; and &bdquo;de.joergdev.mosy-frontend&ldquo; for externalizing properties</li>
+          </ul>
+        </li>
+        <li>WEB-INF/jboss-web.xml
+          <ul>
+            <li>context-root: &bdquo;mosy-web&ldquo;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </li>
-<li>&hellip;/WEB-INF/
-<ul>
-<li>xml</li>
-<li>jboss-deployment-structure.xml
-<ul>
-<li>Add dependent modules &bdquo;de.joergdev.mosy-api-client&ldquo; and &bdquo;de.joergdev.mosy-frontend&ldquo; for externalizing properties</li>
-</ul>
-</li>
-<li>web.xml
-<ul>
-<li>context-root: &bdquo;mosy-web&ldquo;</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 </html>
