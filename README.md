@@ -45,7 +45,7 @@
 
 <li>Record calls and use as mockdata
 	<ul>
-		<li>Configurable global, for interface, for method oder only on defined requests</li>
+		<li>Configurable global, for interface, for method or only on defined requests</li>
 		<li>Possibilty to define recordsession for separated records</li>
 	</ul>
 </li>
@@ -299,6 +299,8 @@
 <li>Title</li>
 <li>Active</li>
 <li>Common (Use for assingned mockprofiles and / or global)</li>
+<li>Path params (REST)</li>
+<li>URL arguments (REST)</li>
 <li>Request</li>
 <li>Response</li>
 <li>Created</li>
@@ -405,6 +407,8 @@
 <li>Interface</li>
 <li>Method</li>
 <li>Created</li>
+<li>Path params (REST)</li>
+<li>URL arguments (REST)</li>
 <li>Request</li>
 <li>Response</li>
 </ul>
