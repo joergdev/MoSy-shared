@@ -303,6 +303,7 @@
 <li>URL arguments (REST)</li>
 <li>Request</li>
 <li>Response</li>
+<li>Delay (ms.) - optional to simulate slow(er) response time</li>
 <li>Created</li>
 <li>Count calls</li>
 <br/>
