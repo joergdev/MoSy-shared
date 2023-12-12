@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class UtilsTest
 {
@@ -57,6 +58,69 @@ public class UtilsTest
     bui.append("</Map>");
 
     assertEquals(bui.toString(), xml.replace("\r\n", ""));
+  }
+
+  @Test
+  public void testFormatJSON()
+  {
+    String inputJSON = "{\"name\": \"John\", \"age\": 30}";
+
+    String expectedFormattedJSON = "{\r\n  \"name\" : \"John\",\r\n  \"age\" : 30\r\n}";
+
+    try
+    {
+      assertEquals(expectedFormattedJSON, Utils.formatJSON(inputJSON, true));
+    }
+    catch (IllegalArgumentException ex)
+    {
+      ex.printStackTrace();
+      fail(ex.getMessage());
+    }
+  }
+
+  @Test
+  public void testObject2Json()
+    throws JsonProcessingException
+  {
+    String json = Utils.object2Json(new Person("Fred", 80));
+    assertEquals("{\"name\":\"Fred\",\"age\":80}", json);
+
+    json = Utils.object2Json(new Person("Fred", null));
+    assertEquals("{\"name\":\"Fred\"}", json);
+  }
+
+  private class Person
+  {
+    private String name;
+    private Integer age;
+
+    Person(String name, Integer age)
+    {
+      setName(name);
+      setAge(age);
+    }
+
+    @SuppressWarnings("unused")
+    public String getName()
+    {
+      return name;
+    }
+
+    public void setName(String name)
+    {
+      this.name = name;
+    }
+
+    @SuppressWarnings("unused")
+    public Integer getAge()
+    {
+      return age;
+    }
+
+    public void setAge(Integer age)
+    {
+      this.age = age;
+    }
   }
 
   @Test

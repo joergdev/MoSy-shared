@@ -2,6 +2,7 @@ package de.joergdev.mosy.shared;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +30,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
@@ -42,6 +46,10 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Utils
 {
@@ -116,6 +124,13 @@ public class Utils
     return col != null
         ? col
         : new ArrayList<>();
+  }
+
+  public static <T, K> Map<T, K> nvlMap(Map<T, K> map)
+  {
+    return map != null
+        ? map
+        : new HashMap<>();
   }
 
   public static <T extends Comparable<T>> T min(@SuppressWarnings("unchecked") T... t)
@@ -657,5 +672,102 @@ public class Utils
     {
       safeClose(writer);
     }
+  }
+
+  public static String formatJSON(final String json, boolean failOnParseError)
+  {
+    if (isEmpty(json))
+    {
+      return json;
+    }
+
+    try
+    {
+      ObjectMapper objectMapper = new ObjectMapper();
+      Object jsonObject = objectMapper.readValue(json, Object.class);
+      return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
+    }
+    catch (JsonParseException ex)
+    {
+      if (failOnParseError)
+      {
+        throw new IllegalArgumentException(json, ex);
+      }
+
+      return json;
+    }
+    catch (IOException ex)
+    {
+      throw new IllegalArgumentException(json, ex);
+    }
+  }
+
+  public static String object2Json(Object o)
+    throws JsonProcessingException
+  {
+    return object2Json(o, true);
+  }
+
+  public static String object2Json(Object o, boolean withoutNullValues)
+    throws JsonProcessingException
+  {
+    if (o == null)
+    {
+      return null;
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    if (withoutNullValues)
+    {
+      mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    return mapper.writeValueAsString(o);
+  }
+
+  public static String removeFromStringStart(String str, String strToRemove)
+  {
+    if (str != null && strToRemove != null && str.startsWith(strToRemove))
+    {
+      if (str.length() > strToRemove.length())
+      {
+        str = str.substring(strToRemove.length());
+      }
+      else
+      {
+        str = "";
+      }
+    }
+
+    return str;
+  }
+
+  @SafeVarargs
+  public static <K, V> Map<K, V> mapOfEntries(SimpleEntry<K, V>... values)
+  {
+    return Stream.of(values).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+  }
+
+  public static <K, V> SimpleEntry<K, V> mapEntry(K key, V value)
+  {
+    return new SimpleEntry<K, V>(key, value);
+  }
+
+  public static boolean mapContainsMap(Map<?, ?> mapBase, Map<?, ?> mapCheckIfContains)
+  {
+    mapBase = Utils.nvlMap(mapBase);
+    mapCheckIfContains = Utils.nvlMap(mapCheckIfContains);
+
+    for (Entry<?, ?> entryCheckIfContains : mapCheckIfContains.entrySet())
+    {
+      if (!mapBase.containsKey(entryCheckIfContains.getKey())
+          || !Objects.equals(mapBase.get(entryCheckIfContains.getKey()), entryCheckIfContains.getValue()))
+      {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
