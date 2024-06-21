@@ -1,8 +1,9 @@
 package de.joergdev.mosy.shared;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.loader.api.BeanMappingBuilder;
-import org.dozer.loader.api.TypeMappingBuilder;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
+import com.github.dozermapper.core.loader.api.BeanMappingBuilder;
+import com.github.dozermapper.core.loader.api.TypeMappingBuilder;
 
 public class ObjectUtils
 {
@@ -10,12 +11,13 @@ public class ObjectUtils
   {
     if (source != null && destination != null)
     {
-      DozerBeanMapper mapper = new DozerBeanMapper();
+      Mapper mapper;
 
       if (exclusions != null && exclusions.length > 0)
       {
-        mapper.addMapping(new BeanMappingBuilder()
+        mapper = DozerBeanMapperBuilder.create().withMappingBuilder(new BeanMappingBuilder()
         {
+          @Override
           protected void configure()
           {
             TypeMappingBuilder mappingBuilder = mapping(source.getClass(), destination.getClass());
@@ -25,7 +27,11 @@ public class ObjectUtils
               mappingBuilder.exclude(exclusion);
             }
           }
-        });
+        }).build();
+      }
+      else
+      {
+        mapper = DozerBeanMapperBuilder.buildDefault();
       }
 
       mapper.map(source, destination);
