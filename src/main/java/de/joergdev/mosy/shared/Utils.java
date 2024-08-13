@@ -46,10 +46,10 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Utils
 {
@@ -88,9 +88,7 @@ public class Utils
 
   public static <T> T getFirstElementOfCollection(Collection<T> col)
   {
-    return isCollectionEmpty(col)
-        ? null
-        : col.iterator().next();
+    return isCollectionEmpty(col) ? null : col.iterator().next();
   }
 
   public static boolean isCollectionEmpty(Collection<?> col)
@@ -100,37 +98,27 @@ public class Utils
 
   public static String nvl(String s)
   {
-    return s == null
-        ? ""
-        : s;
+    return s == null ? "" : s;
   }
 
   public static <T> T nvl(T t1, T t2)
   {
-    return t1 == null
-        ? t2
-        : t1;
+    return t1 == null ? t2 : t1;
   }
 
   public static <T> T nvl(T t1, Supplier<T> t2)
   {
-    return t1 == null
-        ? t2.get()
-        : t1;
+    return t1 == null ? t2.get() : t1;
   }
 
   public static <T> Collection<T> nvlCollection(Collection<T> col)
   {
-    return col != null
-        ? col
-        : new ArrayList<>();
+    return col != null ? col : new ArrayList<>();
   }
 
   public static <T, K> Map<T, K> nvlMap(Map<T, K> map)
   {
-    return map != null
-        ? map
-        : new HashMap<>();
+    return map != null ? map : new HashMap<>();
   }
 
   public static <T extends Comparable<T>> T min(@SuppressWarnings("unchecked") T... t)
@@ -150,16 +138,12 @@ public class Utils
 
   public static Integer asInteger(String str)
   {
-    return isEmpty(str)
-        ? null
-        : Integer.valueOf(str);
+    return isEmpty(str) ? null : Integer.valueOf(str);
   }
 
   public static String asString(Integer i)
   {
-    return i == null
-        ? null
-        : String.valueOf(i);
+    return i == null ? null : String.valueOf(i);
   }
 
   public static void safeClose(Closeable... closeables)
@@ -211,16 +195,12 @@ public class Utils
 
   public static Integer bigDecimal2Integer(BigDecimal bd)
   {
-    return bd == null
-        ? null
-        : bd.intValue();
+    return bd == null ? null : bd.intValue();
   }
 
   public static Integer bigInteger2Integer(BigInteger bi)
   {
-    return bi == null
-        ? null
-        : bi.intValue();
+    return bi == null ? null : bi.intValue();
   }
 
   public static <T> boolean addToCollectionIfNotNull(Collection<T> col, T t)
@@ -399,8 +379,7 @@ public class Utils
     {
       if (throwException)
       {
-        throw new IllegalArgumentException(
-            "'" + s + "' cannot be parsed to Date with format '" + formatString + "'");
+        throw new IllegalArgumentException("'" + s + "' cannot be parsed to Date with format '" + formatString + "'");
       }
       else
       {
@@ -509,14 +488,11 @@ public class Utils
   {
     try
     {
-      XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
-          .createXMLStreamReader(new StringReader(xml));
+      XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
 
       String charsetStr = xmlStreamReader.getCharacterEncodingScheme();
 
-      return Utils.isEmpty(charsetStr)
-          ? null
-          : Charset.forName(charsetStr);
+      return Utils.isEmpty(charsetStr) ? null : Charset.forName(charsetStr);
     }
     catch (Exception ex)
     {
@@ -761,13 +737,27 @@ public class Utils
 
     for (Entry<?, ?> entryCheckIfContains : mapCheckIfContains.entrySet())
     {
-      if (!mapBase.containsKey(entryCheckIfContains.getKey())
-          || !Objects.equals(mapBase.get(entryCheckIfContains.getKey()), entryCheckIfContains.getValue()))
+      if (!mapBase.containsKey(entryCheckIfContains.getKey()) || !Objects.equals(mapBase.get(entryCheckIfContains.getKey()), entryCheckIfContains.getValue()))
       {
         return false;
       }
     }
 
     return true;
+  }
+
+  /**
+   * Get the system-property if set, otherwise the enironment variable.
+   */
+  public static String getSystemProperty(String prop)
+  {
+    String value = System.getProperty(prop);
+
+    if (value == null)
+    {
+      value = System.getenv(prop);
+    }
+
+    return value;
   }
 }
