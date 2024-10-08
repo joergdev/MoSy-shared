@@ -22,6 +22,7 @@
 <a href="#a20">Property files</a><br/>
 <a href="#a21">Runtime environments � Spring Boot</a><br/>
 <a href="#a22">Runtime environments � JEE ApplicationServer (JBoss / Wildfly)</a><br/>
+<a href="#a23">Technical Architecture</a><br/>
  
 <br/><br/><br/>
 <a name="a1"/>
@@ -704,4 +705,10 @@ The following Properties can be defined as system properties, environment proper
     </li>
   </ul>
 </li>
+<br/><br/><br/><br/><br/><br/>
+
+<a name="a23"/>
+<p><strong><u>Technical Architecture</u></strong></p>
+<br/>
+<img src="doc/mosy_arc.png" />
 </html>
