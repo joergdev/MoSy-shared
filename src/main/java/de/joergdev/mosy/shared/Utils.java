@@ -274,9 +274,7 @@ public class Utils
   }
 
   /**
-   * Format: dd.MM.yyyy HH:mm:ss
-   *
-   * @param value
+   * @param value - date in format dd.MM.yyyy HH:mm:ss
    * @return  LocalDateTime
    */
   public static LocalDateTime cnvString2LocalDateTime(String value)
@@ -285,10 +283,8 @@ public class Utils
   }
 
   /**
-   * Example.: yyyy-MM-dd HH:mm
-   *
-   * @param value
-   * @param pattern
+   * @param value - date as string
+   * @param pattern - pattern for date
    * @return LocalDateTime
    */
   public static LocalDateTime cnvString2LocalDateTime(String value, String pattern)
@@ -320,7 +316,7 @@ public class Utils
   /**
    * Formatiert LocalDateTime to dd.MM.yyyy HH:mm:ss - string
    * 
-   * @param localDateTime
+   * @param localDateTime - dateTime
    * @return String
    */
   public static String formatLocalDateTime(LocalDateTime localDateTime)
@@ -350,8 +346,9 @@ public class Utils
   /**
    * Transforms a String to Date.
    *
-   * @param s String to parse
-   * @param format
+   * @param s - String to parse
+   * @param formatString - pattern
+   * @param throwException - throw exception on failure if true, else return null
    * @return Date parsed Date or <code>null</code>, if s <code>null</code>
    * @throws IllegalArgumentException if s has invalid format or content
    */
@@ -748,6 +745,9 @@ public class Utils
 
   /**
    * Get the system-property if set, otherwise the enironment variable.
+   * 
+   * @param prop - system or enironment variable name
+   * @return String - system or enironment variable value
    */
   public static String getSystemProperty(String prop)
   {
