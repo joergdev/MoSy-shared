@@ -18,11 +18,12 @@
 <a href="#a16">Main - Mockprofiles</a><br/>
 <a href="#a17">Mockprofile</a><br/>
 <a href="#a18">Multi-tenancy</a><br/>
-<a href="#a19">API-Client</a><br/>
-<a href="#a20">Property files</a><br/>
-<a href="#a21">Runtime environments � Spring Boot</a><br/>
-<a href="#a22">Runtime environments � JEE ApplicationServer (JBoss / Wildfly)</a><br/>
-<a href="#a23">Technical Architecture</a><br/>
+<a href="#a19">API</a><br/>
+<a href="#a20">API-Client</a><br/>
+<a href="#a21">Property files</a><br/>
+<a href="#a22">Runtime environments � Spring Boot</a><br/>
+<a href="#a23">Runtime environments � JEE ApplicationServer (JBoss / Wildfly)</a><br/>
+<a href="#a24">Technical Architecture</a><br/>
  
 <br/><br/><br/>
 <a name="a1"/>
@@ -538,7 +539,15 @@
 <img src="doc/tenant_edit.png" />
 <br/><br/><br/><br/><br/><br/>
 
+
 <a name="a19"/>
+<p><strong><u>API</u></strong></p>
+[OpenAPI Description](doc/api.yaml)
+<br/>
+<br/><br/><br/><br/><br/><br/>
+
+
+<a name="a20"/>
 <p><strong><u>API-Client</u></strong></p>
 <ul>
 <li>Lets you integrate MoSy easily into your apps and your processes</li>
@@ -555,7 +564,7 @@
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a20"/>
+<a name="a21"/>
 <p><strong><u>Properties</u></strong></p>
 <br/>
 The following Properties can be defined as system properties, environment properties or by property file and are read in this order.
@@ -616,7 +625,7 @@ The following Properties can be defined as system properties, environment proper
 </li>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a21"/>
+<a name="a22"/>
 <p><strong><u>Runtime environments &ndash; Spring Boot</u></strong></p>
 <p>Spring-boot Version: 2.7.8</p>
 <br/>
@@ -659,7 +668,7 @@ The following Properties can be defined as system properties, environment proper
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a22"/>
+<a name="a23"/>
 <p><strong><u>Runtime environments &ndash; JEE ApplicationServer (JBoss / Wildfly)</u></strong></p>
 <p>Tested and runnable with JBoss EAP 7.4.10 (JEE 7) with JDK8.</p>
 <br/>
@@ -707,7 +716,7 @@ The following Properties can be defined as system properties, environment proper
 </li>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a23"/>
+<a name="a24"/>
 <p><strong><u>Technical Architecture</u></strong></p>
 <br/>
 <img src="doc/mosy_arc.png" />
