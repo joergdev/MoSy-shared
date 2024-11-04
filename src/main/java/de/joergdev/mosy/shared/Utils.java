@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
@@ -39,6 +40,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.jdom2.Element;
@@ -46,6 +48,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -189,7 +192,8 @@ public class Utils
     }
     catch (InterruptedException e)
     {
-      // do nothing
+      // Restore interrupted state...
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -502,7 +506,7 @@ public class Utils
   {
     try (InputStream is2 = isSupplier.get())
     {
-      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory dbFactory = getDocumentBuilderFactory();
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(is2);
 
@@ -572,18 +576,18 @@ public class Utils
         // special format for date for readability
         if (value instanceof java.util.Date)
         {
-          DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+          DateFormat df = new SimpleDateFormat(DATE_FORMAT_DD_MM_YYYY_HH_MM_SS);
           textValue = df.format(value);
         }
         else if (value instanceof LocalDate)
         {
           LocalDate lD = (LocalDate) value;
-          textValue = lD.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+          textValue = lD.format(DateTimeFormatter.ofPattern(DATE_FORMAT_DD_MM_YYYY));
         }
         else if (value instanceof LocalDateTime)
         {
           LocalDateTime lDT = (LocalDateTime) value;
-          textValue = lDT.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+          textValue = lDT.format(DateTimeFormatter.ofPattern(DATE_FORMAT_DD_MM_YYYY_HH_MM_SS));
         }
         else if (value instanceof LocalTime)
         {
@@ -609,31 +613,34 @@ public class Utils
       return null;
     }
 
-    StringWriter writer = null;
-
-    try
+    try (StringWriter writer = new StringWriter())
     {
-      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+      DocumentBuilderFactory factory = getDocumentBuilderFactory();
+      factory.setIgnoringElementContentWhitespace(true);
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
+      Document doc = builder.parse(new InputSource(new StringReader(xml.trim())));
+
+      Transformer transformer = getTransformerFactory().newTransformer();
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
       transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
-      writer = new StringWriter();
-      StreamResult result = new StreamResult(writer);
-
-      transformer.transform(new DOMSource(getDocumentFromInputString(xml)), result);
+      transformer.transform(new DOMSource(doc), new StreamResult(writer));
 
       String xmlFormatted = writer.toString();
 
       if (xml.startsWith("<?xml"))
       {
-        xmlFormatted = xml.substring(0, xml.indexOf("?>") + 2) + "\r\n" + xmlFormatted;
+        xmlFormatted = xml.substring(0, xml.indexOf("?>") + 2) + "\n" + xmlFormatted;
       }
 
-      if (xmlFormatted.endsWith("\r\n") && !xml.endsWith("\r\n"))
+      if (xmlFormatted.endsWith("\n") && !xml.endsWith("\n"))
       {
         xmlFormatted = xmlFormatted.substring(0, xmlFormatted.length() - 2);
       }
+
+      xmlFormatted = xmlFormatted.replace("\r", "");
 
       return xmlFormatted;
     }
@@ -641,10 +648,29 @@ public class Utils
     {
       throw new IllegalStateException(ex);
     }
-    finally
-    {
-      safeClose(writer);
-    }
+  }
+
+  private static TransformerFactory getTransformerFactory()
+    throws TransformerFactoryConfigurationError
+  {
+    TransformerFactory trFactory = TransformerFactory.newInstance();
+
+    // prohibit the use of all protocols by external entities
+    trFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    trFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
+    return trFactory;
+  }
+
+  private static DocumentBuilderFactory getDocumentBuilderFactory()
+  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+    // prohibit the use of all protocols by external entities
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+    return factory;
   }
 
   public static String formatJSON(final String json, boolean failOnParseError)
@@ -724,7 +750,7 @@ public class Utils
 
   public static <K, V> SimpleEntry<K, V> mapEntry(K key, V value)
   {
-    return new SimpleEntry<K, V>(key, value);
+    return new SimpleEntry<>(key, value);
   }
 
   public static boolean mapContainsMap(Map<?, ?> mapBase, Map<?, ?> mapCheckIfContains)
