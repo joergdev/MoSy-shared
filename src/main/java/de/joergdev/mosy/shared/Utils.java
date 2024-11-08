@@ -637,12 +637,28 @@ public class Utils
 
       if (xmlFormatted.endsWith("\n") && !xml.endsWith("\n"))
       {
-        xmlFormatted = xmlFormatted.substring(0, xmlFormatted.length() - 2);
+        xmlFormatted = xmlFormatted.substring(0, xmlFormatted.length() - 1);
       }
 
       xmlFormatted = xmlFormatted.replace("\r", "");
 
-      return xmlFormatted;
+      // replace duplicated newLines with single newLine
+      // (thank you unix)
+      StringBuilder cleanedOutput = new StringBuilder();
+      for (String line : xmlFormatted.split("\n"))
+      {
+        if (!line.trim().isEmpty())
+        {
+          if (cleanedOutput.length() > 0)
+          {
+            cleanedOutput.append("\n");
+          }
+
+          cleanedOutput.append(line);
+        }
+      }
+
+      return cleanedOutput.toString();
     }
     catch (Exception ex)
     {
