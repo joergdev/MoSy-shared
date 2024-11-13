@@ -17,10 +17,13 @@
 <a href="#a15">Interface - Method - Recordconfig</a><br/>
 <a href="#a16">Main - Mockprofiles</a><br/>
 <a href="#a17">Mockprofile</a><br/>
-<a href="#a18">API-Client</a><br/>
-<a href="#a19">Property files</a><br/>
-<a href="#a20">Runtime environments – Spring Boot</a><br/>
-<a href="#a21">Runtime environments – JEE ApplicationServer (JBoss / Wildfly)</a><br/>
+<a href="#a18">Multi-tenancy</a><br/>
+<a href="#a19">API</a><br/>
+<a href="#a20">API-Client</a><br/>
+<a href="#a21">Property files</a><br/>
+<a href="#a22">Runtime environments ï¿½ Spring Boot</a><br/>
+<a href="#a23">Runtime environments ï¿½ JEE ApplicationServer (JBoss / Wildfly)</a><br/>
+<a href="#a24">Technical Architecture</a><br/>
  
 <br/><br/><br/>
 <a name="a1"/>
@@ -504,6 +507,47 @@
 <br/><br/><br/><br/><br/><br/>
 
 <a name="a18"/>
+<p><strong><u>Multi-tenancy</u></strong></p>
+<ul>
+  <li>With multi-tenancy mode activated, you can configure all data isolated for your tenant</li>
+  <li>By default, multi-tenancy mode is not activated
+    <ul>
+      <li>Activate by setting the system/environment property "MOSY_MULTI_TENANCY_ENABLED" or the property "multi_tenancy_enabled" in mosy_backend.properties</li>
+    </ul>
+  </li>
+  <li>Mocking / Integration
+    <ul>
+    	<li>Soap / Rest calls: Set tenantId in HTTP Header (see de.joergdev.mosy.api.APIConstants.HTTP_HEADER_TENANT_ID)
+    	  <ul>
+    	    <li>Alternative (without HTTP header): call via url (for example, SOAP) .../<b>tenants/{tenantId}/</b>mock-services/soap/SoapService</li>
+    	  </ul>
+    	</li>
+    	<li>If you want to use the API(client) you have to log in with the tenantId</li>
+    </ul>
+  </li>
+</ul>
+<br/>
+<p><u>Login with tenant choose / creation of tenant</u></p>
+<img src="doc/login_multi_tenancy.png" />
+<img src="doc/login_tenant_choose.png" />
+<br/>
+<img src="doc/tenant_create.png" />
+<br/><br/><br/>
+<p><u>Edit / delete tenant (after login)</u></p>
+<img src="doc/main_edit_tenant_data.png" />
+<br/>
+<img src="doc/tenant_edit.png" />
+<br/><br/><br/><br/><br/><br/>
+
+
+<a name="a19"/>
+<p><strong><u>API</u></strong></p>
+[OpenAPI Description](doc/api.yaml)
+<br/>
+<br/><br/><br/><br/><br/><br/>
+
+
+<a name="a20"/>
 <p><strong><u>API-Client</u></strong></p>
 <ul>
 <li>Lets you integrate MoSy easily into your apps and your processes</li>
@@ -520,8 +564,11 @@
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a19"/>
-<p><strong><u>Property files</u></strong></p>
+<a name="a21"/>
+<p><strong><u>Properties</u></strong></p>
+<br/>
+The following Properties can be defined as system properties, environment properties or by property file and are read in this order.
+<br/><br/>
 <ul>
 <li>mosy-backend
   <ul>
@@ -529,7 +576,18 @@
       <ul>
         <li>login_secret
           <ul>
-            <li>Default = &bdquo;m0sy&ldquo;</li>
+            <li>default = &bdquo;m0sy&ldquo;</li>
+          </ul>
+          <ul>
+            <li>system/environment property = &bdquo;MOSY_LOGIN_SECRET&ldquo;</li>
+          </ul>
+        </li>
+        <li>multi_tenancy_enabled
+          <ul>
+            <li>default = false</li>
+          </ul>
+          <ul>
+            <li>system/environment property = &bdquo;MOSY_MULTI_TENANCY_ENABLED&ldquo;</li>
           </ul>
         </li>
       </ul>
@@ -542,7 +600,10 @@
       <ul>
         <li>api_endpoint
           <ul>
-            <li>Default = <a href="http://localhost:3911/mosy/api/v_2_1">http://localhost:3911/mosy/api/v_2_1</a></li>
+            <li>default = <a href="http://localhost:3911/mosy/api/v_2_1">http://localhost:3911/mosy/api/v_2_1</a></li>
+          </ul>
+          <ul>
+            <li>system/environment property = &bdquo;MOSY_API_ENDPOINT&ldquo;</li>
           </ul>
          </li>
       </ul>
@@ -555,7 +616,7 @@
       <ul>
         <li>upload_mockdata_singlemode
           <ul>
-            <li>Defaultvalue = &bdquo;false&ldquo;</li>
+            <li>defaultvalue = &bdquo;false&ldquo;</li>
           </ul>
         </li>
       </ul>
@@ -564,7 +625,7 @@
 </li>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a20"/>
+<a name="a22"/>
 <p><strong><u>Runtime environments &ndash; Spring Boot</u></strong></p>
 <p>Spring-boot Version: 2.7.8</p>
 <br/>
@@ -578,6 +639,9 @@
             <li>application.properties
               <ul>
                 <li>server.port: 3911</li>
+                <ul>
+                	<li>Can also be set by "-Dserver.port=xx"</li>
+                </ul>
               </ul>
             </li>
             <li>log4j.xml</li>
@@ -604,7 +668,7 @@
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a21"/>
+<a name="a23"/>
 <p><strong><u>Runtime environments &ndash; JEE ApplicationServer (JBoss / Wildfly)</u></strong></p>
 <p>Tested and runnable with JBoss EAP 7.4.10 (JEE 7) with JDK8.</p>
 <br/>
@@ -650,4 +714,10 @@
     </li>
   </ul>
 </li>
+<br/><br/><br/><br/><br/><br/>
+
+<a name="a24"/>
+<p><strong><u>Technical Architecture</u></strong></p>
+<br/>
+<img src="doc/mosy_arc.png" />
 </html>

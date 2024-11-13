@@ -134,12 +134,12 @@ public class UtilsTest
     System.out.println(xmlFormatted);
 
     StringBuilder bui = new StringBuilder();
-    bui.append("<Map>").append("\r\n");
-    bui.append("  <SingleVal>1</SingleVal>").append("\r\n");
-    bui.append("  <listMap>").append("\r\n");
-    bui.append("    <SingleValMapInList>10</SingleValMapInList>").append("\r\n");
-    bui.append("  </listMap>").append("\r\n");
-    bui.append("  <list>5</list>").append("\r\n");
+    bui.append("<Map>").append("\n");
+    bui.append("  <SingleVal>1</SingleVal>").append("\n");
+    bui.append("  <listMap>").append("\n");
+    bui.append("    <SingleValMapInList>10</SingleValMapInList>").append("\n");
+    bui.append("  </listMap>").append("\n");
+    bui.append("  <list>5</list>").append("\n");
     bui.append("</Map>");
 
     assertEquals(bui.toString(), xmlFormatted);
@@ -152,14 +152,13 @@ public class UtilsTest
     System.out.println(xmlFormatted);
 
     bui = new StringBuilder();
-    bui.append("<?xml version=\"1.0\" ?>").append("\r\n");
-    bui.append("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">").append("\r\n");
-    bui.append("  <S:Body>").append("\r\n");
-    bui.append("    <ns2:testMethod xmlns:ns2=\"http://services.test.mosy.joergdev.github.com/\">")
-        .append("\r\n");
-    bui.append("      <action>2</action>").append("\r\n");
-    bui.append("    </ns2:testMethod>").append("\r\n");
-    bui.append("  </S:Body>").append("\r\n");
+    bui.append("<?xml version=\"1.0\" ?>").append("\n");
+    bui.append("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">").append("\n");
+    bui.append("  <S:Body>").append("\n");
+    bui.append("    <ns2:testMethod xmlns:ns2=\"http://services.test.mosy.joergdev.github.com/\">").append("\n");
+    bui.append("      <action>2</action>").append("\n");
+    bui.append("    </ns2:testMethod>").append("\n");
+    bui.append("  </S:Body>").append("\n");
     bui.append("</S:Envelope>");
 
     assertEquals(bui.toString(), xmlFormatted);

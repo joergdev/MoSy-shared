@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
@@ -39,6 +40,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.jdom2.Element;
@@ -46,10 +48,11 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Utils
 {
@@ -88,9 +91,7 @@ public class Utils
 
   public static <T> T getFirstElementOfCollection(Collection<T> col)
   {
-    return isCollectionEmpty(col)
-        ? null
-        : col.iterator().next();
+    return isCollectionEmpty(col) ? null : col.iterator().next();
   }
 
   public static boolean isCollectionEmpty(Collection<?> col)
@@ -100,37 +101,27 @@ public class Utils
 
   public static String nvl(String s)
   {
-    return s == null
-        ? ""
-        : s;
+    return s == null ? "" : s;
   }
 
   public static <T> T nvl(T t1, T t2)
   {
-    return t1 == null
-        ? t2
-        : t1;
+    return t1 == null ? t2 : t1;
   }
 
   public static <T> T nvl(T t1, Supplier<T> t2)
   {
-    return t1 == null
-        ? t2.get()
-        : t1;
+    return t1 == null ? t2.get() : t1;
   }
 
   public static <T> Collection<T> nvlCollection(Collection<T> col)
   {
-    return col != null
-        ? col
-        : new ArrayList<>();
+    return col != null ? col : new ArrayList<>();
   }
 
   public static <T, K> Map<T, K> nvlMap(Map<T, K> map)
   {
-    return map != null
-        ? map
-        : new HashMap<>();
+    return map != null ? map : new HashMap<>();
   }
 
   public static <T extends Comparable<T>> T min(@SuppressWarnings("unchecked") T... t)
@@ -150,16 +141,12 @@ public class Utils
 
   public static Integer asInteger(String str)
   {
-    return isEmpty(str)
-        ? null
-        : Integer.valueOf(str);
+    return isEmpty(str) ? null : Integer.valueOf(str);
   }
 
   public static String asString(Integer i)
   {
-    return i == null
-        ? null
-        : String.valueOf(i);
+    return i == null ? null : String.valueOf(i);
   }
 
   public static void safeClose(Closeable... closeables)
@@ -205,22 +192,19 @@ public class Utils
     }
     catch (InterruptedException e)
     {
-      // do nothing
+      // Restore interrupted state...
+      Thread.currentThread().interrupt();
     }
   }
 
   public static Integer bigDecimal2Integer(BigDecimal bd)
   {
-    return bd == null
-        ? null
-        : bd.intValue();
+    return bd == null ? null : bd.intValue();
   }
 
   public static Integer bigInteger2Integer(BigInteger bi)
   {
-    return bi == null
-        ? null
-        : bi.intValue();
+    return bi == null ? null : bi.intValue();
   }
 
   public static <T> boolean addToCollectionIfNotNull(Collection<T> col, T t)
@@ -294,9 +278,7 @@ public class Utils
   }
 
   /**
-   * Format: dd.MM.yyyy HH:mm:ss
-   *
-   * @param value
+   * @param value - date in format dd.MM.yyyy HH:mm:ss
    * @return  LocalDateTime
    */
   public static LocalDateTime cnvString2LocalDateTime(String value)
@@ -305,10 +287,8 @@ public class Utils
   }
 
   /**
-   * Example.: yyyy-MM-dd HH:mm
-   *
-   * @param value
-   * @param pattern
+   * @param value - date as string
+   * @param pattern - pattern for date
    * @return LocalDateTime
    */
   public static LocalDateTime cnvString2LocalDateTime(String value, String pattern)
@@ -340,7 +320,7 @@ public class Utils
   /**
    * Formatiert LocalDateTime to dd.MM.yyyy HH:mm:ss - string
    * 
-   * @param localDateTime
+   * @param localDateTime - dateTime
    * @return String
    */
   public static String formatLocalDateTime(LocalDateTime localDateTime)
@@ -370,8 +350,9 @@ public class Utils
   /**
    * Transforms a String to Date.
    *
-   * @param s String to parse
-   * @param format
+   * @param s - String to parse
+   * @param formatString - pattern
+   * @param throwException - throw exception on failure if true, else return null
    * @return Date parsed Date or <code>null</code>, if s <code>null</code>
    * @throws IllegalArgumentException if s has invalid format or content
    */
@@ -399,8 +380,7 @@ public class Utils
     {
       if (throwException)
       {
-        throw new IllegalArgumentException(
-            "'" + s + "' cannot be parsed to Date with format '" + formatString + "'");
+        throw new IllegalArgumentException("'" + s + "' cannot be parsed to Date with format '" + formatString + "'");
       }
       else
       {
@@ -509,14 +489,11 @@ public class Utils
   {
     try
     {
-      XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
-          .createXMLStreamReader(new StringReader(xml));
+      XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
 
       String charsetStr = xmlStreamReader.getCharacterEncodingScheme();
 
-      return Utils.isEmpty(charsetStr)
-          ? null
-          : Charset.forName(charsetStr);
+      return Utils.isEmpty(charsetStr) ? null : Charset.forName(charsetStr);
     }
     catch (Exception ex)
     {
@@ -529,7 +506,7 @@ public class Utils
   {
     try (InputStream is2 = isSupplier.get())
     {
-      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory dbFactory = getDocumentBuilderFactory();
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(is2);
 
@@ -599,18 +576,18 @@ public class Utils
         // special format for date for readability
         if (value instanceof java.util.Date)
         {
-          DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+          DateFormat df = new SimpleDateFormat(DATE_FORMAT_DD_MM_YYYY_HH_MM_SS);
           textValue = df.format(value);
         }
         else if (value instanceof LocalDate)
         {
           LocalDate lD = (LocalDate) value;
-          textValue = lD.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+          textValue = lD.format(DateTimeFormatter.ofPattern(DATE_FORMAT_DD_MM_YYYY));
         }
         else if (value instanceof LocalDateTime)
         {
           LocalDateTime lDT = (LocalDateTime) value;
-          textValue = lDT.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+          textValue = lDT.format(DateTimeFormatter.ofPattern(DATE_FORMAT_DD_MM_YYYY_HH_MM_SS));
         }
         else if (value instanceof LocalTime)
         {
@@ -636,42 +613,80 @@ public class Utils
       return null;
     }
 
-    StringWriter writer = null;
-
-    try
+    try (StringWriter writer = new StringWriter())
     {
-      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+      DocumentBuilderFactory factory = getDocumentBuilderFactory();
+      factory.setIgnoringElementContentWhitespace(true);
+      DocumentBuilder builder = factory.newDocumentBuilder();
+
+      Document doc = builder.parse(new InputSource(new StringReader(xml.trim())));
+
+      Transformer transformer = getTransformerFactory().newTransformer();
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
       transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
-      writer = new StringWriter();
-      StreamResult result = new StreamResult(writer);
-
-      transformer.transform(new DOMSource(getDocumentFromInputString(xml)), result);
+      transformer.transform(new DOMSource(doc), new StreamResult(writer));
 
       String xmlFormatted = writer.toString();
 
       if (xml.startsWith("<?xml"))
       {
-        xmlFormatted = xml.substring(0, xml.indexOf("?>") + 2) + "\r\n" + xmlFormatted;
+        xmlFormatted = xml.substring(0, xml.indexOf("?>") + 2) + "\n" + xmlFormatted;
       }
 
-      if (xmlFormatted.endsWith("\r\n") && !xml.endsWith("\r\n"))
+      if (xmlFormatted.endsWith("\n") && !xml.endsWith("\n"))
       {
-        xmlFormatted = xmlFormatted.substring(0, xmlFormatted.length() - 2);
+        xmlFormatted = xmlFormatted.substring(0, xmlFormatted.length() - 1);
       }
 
-      return xmlFormatted;
+      xmlFormatted = xmlFormatted.replace("\r", "");
+
+      // replace duplicated newLines with single newLine
+      // (thank you unix)
+      StringBuilder cleanedOutput = new StringBuilder();
+      for (String line : xmlFormatted.split("\n"))
+      {
+        if (!line.trim().isEmpty())
+        {
+          if (cleanedOutput.length() > 0)
+          {
+            cleanedOutput.append("\n");
+          }
+
+          cleanedOutput.append(line);
+        }
+      }
+
+      return cleanedOutput.toString();
     }
     catch (Exception ex)
     {
       throw new IllegalStateException(ex);
     }
-    finally
-    {
-      safeClose(writer);
-    }
+  }
+
+  private static TransformerFactory getTransformerFactory()
+    throws TransformerFactoryConfigurationError
+  {
+    TransformerFactory trFactory = TransformerFactory.newInstance();
+
+    // prohibit the use of all protocols by external entities
+    trFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    trFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
+    return trFactory;
+  }
+
+  private static DocumentBuilderFactory getDocumentBuilderFactory()
+  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+    // prohibit the use of all protocols by external entities
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+    return factory;
   }
 
   public static String formatJSON(final String json, boolean failOnParseError)
@@ -751,7 +766,7 @@ public class Utils
 
   public static <K, V> SimpleEntry<K, V> mapEntry(K key, V value)
   {
-    return new SimpleEntry<K, V>(key, value);
+    return new SimpleEntry<>(key, value);
   }
 
   public static boolean mapContainsMap(Map<?, ?> mapBase, Map<?, ?> mapCheckIfContains)
@@ -761,13 +776,30 @@ public class Utils
 
     for (Entry<?, ?> entryCheckIfContains : mapCheckIfContains.entrySet())
     {
-      if (!mapBase.containsKey(entryCheckIfContains.getKey())
-          || !Objects.equals(mapBase.get(entryCheckIfContains.getKey()), entryCheckIfContains.getValue()))
+      if (!mapBase.containsKey(entryCheckIfContains.getKey()) || !Objects.equals(mapBase.get(entryCheckIfContains.getKey()), entryCheckIfContains.getValue()))
       {
         return false;
       }
     }
 
     return true;
+  }
+
+  /**
+   * Get the system-property if set, otherwise the enironment variable.
+   * 
+   * @param prop - system or enironment variable name
+   * @return String - system or enironment variable value
+   */
+  public static String getSystemProperty(String prop)
+  {
+    String value = System.getProperty(prop);
+
+    if (value == null)
+    {
+      value = System.getenv(prop);
+    }
+
+    return value;
   }
 }
