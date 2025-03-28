@@ -89,12 +89,27 @@ public class UtilsTest
     assertEquals("{\"name\":\"Fred\"}", json);
   }
 
-  private class Person
+  @Test
+  public void testJsonToObject()
+  {
+    Person p = Utils.jsonToObject("{\"name\":\"Fred\",\"age\":80}", Person.class);
+    assertNotNull(p);
+    assertEquals("Fred", p.getName());
+    assertEquals(Integer.valueOf(80), p.getAge());
+  }
+
+  private static class Person
   {
     private String name;
     private Integer age;
 
-    Person(String name, Integer age)
+    @SuppressWarnings("unused")
+    public Person()
+    {
+
+    }
+
+    public Person(String name, Integer age)
     {
       setName(name);
       setAge(age);

@@ -18,11 +18,11 @@
 <a href="#a16">Main - Mockprofiles</a><br/>
 <a href="#a17">Mockprofile</a><br/>
 <a href="#a18">Multi-tenancy</a><br/>
-<a href="#a19">API</a><br/>
-<a href="#a20">API-Client</a><br/>
-<a href="#a21">Property files</a><br/>
-<a href="#a22">Runtime environments � Spring Boot</a><br/>
-<a href="#a23">Runtime environments � JEE ApplicationServer (JBoss / Wildfly)</a><br/>
+<a href="#a19">Import / Export</a><br/>
+<a href="#a20">API</a><br/>
+<a href="#a21">API-Client</a><br/>
+<a href="#a22">Property files</a><br/>
+<a href="#a23">Runtime environments � Spring Boot</a><br/>
 <a href="#a24">Technical Architecture</a><br/>
  
 <br/><br/><br/>
@@ -76,7 +76,7 @@
 
 <br/><br/>
 
-<li>Runable as spring-boot-app (standalone, within container) or as JEE app.</li>
+<li>Runable as spring-boot-app - standalone or within container</li>
 
 </ul>
 
@@ -541,16 +541,44 @@
 
 
 <a name="a19"/>
-<p><strong><u>API</u></strong></p>
-[OpenAPI Description](doc/api.yaml)
+<p><strong><u>Import / Export</u></strong></p>
+
+<ul>
+	<li>Possible use-cases
+		<ul>
+			<li>Copy data for another tenant</li>
+			<li>Staging</li>
+			<li>Backup</li>
+		</ul>
+	</li>
+	<li>Export
+		<ul>
+			<li>Export interfaces including methods</li>
+			<li>See MosyApiClient#exportDataToFile</li>
+		</ul>
+	</li>
+	<li>Import
+		<ul>
+			<li>Import interfaces including methods</li>
+			<li>See MosyApiClient#importData or API doc /mosy/api/v_5_0/system/import-data</li>
+		</ul>
+	</li>
+</ul>
 <br/>
 <br/><br/><br/><br/><br/><br/>
 
 
 <a name="a20"/>
+<p><strong><u>API</u></strong></p>
+[OpenAPI Description](doc/api.json)
+<br/>
+<br/><br/><br/><br/><br/><br/>
+
+
+<a name="a21"/>
 <p><strong><u>API-Client</u></strong></p>
 <ul>
-<li>Lets you integrate MoSy easily into your apps and your processes</li>
+<li>Allows you to easily integrate MoSy into your apps and processes</li>
 </ul>
 <br/>
 <ul>
@@ -564,7 +592,7 @@
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a21"/>
+<a name="a22"/>
 <p><strong><u>Properties</u></strong></p>
 <br/>
 The following Properties can be defined as system properties, environment properties or by property file and are read in this order.
@@ -600,7 +628,7 @@ The following Properties can be defined as system properties, environment proper
       <ul>
         <li>api_endpoint
           <ul>
-            <li>default = <a href="http://localhost:3911/mosy/api/v_2_1">http://localhost:3911/mosy/api/v_2_1</a></li>
+            <li>default = <a href="http://localhost:3911/mosy/api/v_5_0">http://localhost:3911/mosy/api/v_5_0</a></li>
           </ul>
           <ul>
             <li>system/environment property = &bdquo;MOSY_API_ENDPOINT&ldquo;</li>
@@ -616,18 +644,20 @@ The following Properties can be defined as system properties, environment proper
       <ul>
         <li>upload_mockdata_singlemode
           <ul>
-            <li>defaultvalue = &bdquo;false&ldquo;</li>
+            <li>defaultvalue = &bdquo;true&ldquo; (false is currently not supported)</li>
           </ul>
         </li>
       </ul>
     </li>
   </ul>
 </li>
+</ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a22"/>
+<a name="a23"/>
 <p><strong><u>Runtime environments &ndash; Spring Boot</u></strong></p>
-<p>Spring-boot Version: 2.7.8</p>
+<p>Spring-boot Version: 3.4.3</p>
+<p>Java Version: 21 (since 5.0.0, before 8)</p>
 <br/>
 <p><u>Projects:</u></p>
 <ul>
@@ -640,7 +670,7 @@ The following Properties can be defined as system properties, environment proper
               <ul>
                 <li>server.port: 3911</li>
                 <ul>
-                	<li>Can also be set by "-Dserver.port=xx"</li>
+                	<li>Could be changed by setting "-Dserver.port=xx"</li>
                 </ul>
               </ul>
             </li>
@@ -652,12 +682,20 @@ The following Properties can be defined as system properties, environment proper
   </li>
   <li>mosy-frontend-standalone
     <ul>
+      <li>JVM Arguments
+      	<ul>
+      		<li><span style="color:red"><b>IMPORTANT: Set "-Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true"</b></span>.</li>
+      	</ul>
+      </li>
       <li>Properties
         <ul>
           <li>META-INF/faces-config.xml</li>
           <li>application.properties
             <ul>
               <li>server.port: 8087</li>
+              <ul>
+              	<li>Could be changed by setting "-Dserver.port=xx"</li>
+              </ul>
             </ul>
           </li>
           <li>log4j.xml</li>
@@ -668,53 +706,6 @@ The following Properties can be defined as system properties, environment proper
 </ul>
 <br/><br/><br/><br/><br/><br/>
 
-<a name="a23"/>
-<p><strong><u>Runtime environments &ndash; JEE ApplicationServer (JBoss / Wildfly)</u></strong></p>
-<p>Tested and runnable with JBoss EAP 7.4.10 (JEE 7) with JDK8.</p>
-<br/>
-<p><u>Projects:</u></p>
-<ul>
-<li>mosy-backend-war
-  <ul>
-    <li>Properties
-      <ul>
-        <li>log4j.xml</li>
-        <li>META-INF/persistence.xml</li>
-        <li>WEB-INF/jboss-deployment-structure.xml
-          <ul>
-            <li>Add dependent module &bdquo;de.joergdev.mosy-backend&ldquo; for externalizing properties</li>
-          </ul>
-        </li>
-        <li>jboss-web.xml
-          <ul>
-            <li>context-root: /</li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</li>
-<li>mosy-frontend-war
-  <ul>
-    <li>Properties
-      <ul>
-        <li>log4j.xml</li>
-        <li>META-INF/faces-config.xml</li>
-        <li>WEB-INF/jboss-deployment-structure.xml
-          <ul>
-            <li>Add dependent modules &bdquo;de.joergdev.mosy-api-client&ldquo; and &bdquo;de.joergdev.mosy-frontend&ldquo; for externalizing properties</li>
-          </ul>
-        </li>
-        <li>WEB-INF/jboss-web.xml
-          <ul>
-            <li>context-root: &bdquo;mosy-web&ldquo;</li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</li>
-<br/><br/><br/><br/><br/><br/>
 
 <a name="a24"/>
 <p><strong><u>Technical Architecture</u></strong></p>
