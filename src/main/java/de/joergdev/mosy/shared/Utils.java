@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -52,6 +51,7 @@ import org.xml.sax.InputSource;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utils
@@ -202,9 +202,9 @@ public class Utils
     return bd == null ? null : bd.intValue();
   }
 
-  public static Integer bigInteger2Integer(BigInteger bi)
+  public static Integer numberToInteger(Number number)
   {
-    return bi == null ? null : bi.intValue();
+    return number == null ? null : number.intValue();
   }
 
   public static <T> boolean addToCollectionIfNotNull(Collection<T> col, T t)
@@ -739,6 +739,22 @@ public class Utils
     }
 
     return mapper.writeValueAsString(o);
+  }
+
+  public static <T> T jsonToObject(String json, Class<T> clazz)
+  {
+    ObjectMapper om = new ObjectMapper();
+    om.findAndRegisterModules();
+
+    try
+    {
+      return om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) //
+          .readValue(json, clazz);
+    }
+    catch (JsonProcessingException ex)
+    {
+      throw new IllegalStateException(ex);
+    }
   }
 
   public static String removeFromStringStart(String str, String strToRemove)

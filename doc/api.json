@@ -1,0 +1,2826 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "MoSy API",
+        "version": "v5.0"
+    },
+    "servers": [{
+            "url": "http://localhost:3911/mosy/api/v_5_0",
+            "description": "Local server url"
+        }
+    ],
+    "tags": [{
+            "name": "Tenants",
+            "description": "API for managing tenants"
+        }, {
+            "name": "Interfaces",
+            "description": "API for managing interfaces and their methods"
+        }, {
+            "name": "Records",
+            "description": "API for managing records"
+        }, {
+            "name": "Mock Services",
+            "description": "APIs for capturing and processing SOAP, REST and custom requests."
+        }, {
+            "name": "System",
+            "description": "Operations for managing system functionalities"
+        }, {
+            "name": "Mock Profiles",
+            "description": "API for managing mock profiles"
+        }, {
+            "name": "Record Sessions",
+            "description": "API to manage record sessions"
+        }, {
+            "name": "MockData",
+            "description": "API for handling mock data operations"
+        }, {
+            "name": "RecordConfig",
+            "description": "API for managing record configurations"
+        }, {
+            "name": "Globalconfig",
+            "description": "API for managing global configurations"
+        }
+    ],
+    "paths": {
+        "/mosy/api/v_5_0/mock-services/rest/{pth}": {
+            "get": {
+                "tags": ["Mock Services"],
+                "summary": "Capture REST GET request",
+                "description": "Captures a REST GET request.",
+                "operationId": "captureRestGet",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "params",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Mock Services"],
+                "summary": "Capture REST PUT request",
+                "description": "Captures a REST PUT request.",
+                "operationId": "captureRestPut",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Mock Services"],
+                "summary": "Capture REST POST request",
+                "description": "Captures a REST POST request.",
+                "operationId": "captureRestPost",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Mock Services"],
+                "summary": "Capture REST DELETE request",
+                "description": "Captures a REST DELETE request.",
+                "operationId": "captureRestDelete",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/tenants/{id}/{pth}": {
+            "get": {
+                "tags": ["Tenants"],
+                "summary": "Routes GET request",
+                "description": "Routes the GET request to the appropriate subsystem",
+                "operationId": "routeGetRequest",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Request routed successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Tenants"],
+                "summary": "Routes PUT request",
+                "description": "Routes the PUT request to the appropriate subsystem",
+                "operationId": "routePutRequest",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Request routed successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Tenants"],
+                "summary": "Routes POST request",
+                "description": "Routes the POST request to the appropriate subsystem",
+                "operationId": "routePostRequest",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Request routed successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Tenants"],
+                "summary": "Routes DELETE request",
+                "description": "Routes the DELETE request to the appropriate subsystem",
+                "operationId": "routeDeleteRequest",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request routed successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/records/save": {
+            "post": {
+                "tags": ["Records"],
+                "summary": "Save a record",
+                "description": "Saves a record. Normally returns HTTP 200, but may return HTTP 500 in case of errors.",
+                "operationId": "save",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Record"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Record successfully saved",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/record-sessions/create": {
+            "post": {
+                "tags": ["Record Sessions"],
+                "summary": "Create session",
+                "description": "Creates a new record session. Normally returns HTTP 200, but may return HTTP 500.",
+                "operationId": "create",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session created successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/record-config/save": {
+            "post": {
+                "tags": ["RecordConfig"],
+                "summary": "Save Record Config",
+                "description": "Save a new or existing record configuration.",
+                "operationId": "save_1",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecordConfig"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully saved record configuration",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mockdata/save": {
+            "post": {
+                "tags": ["MockData"],
+                "summary": "Save mock data",
+                "description": "Save provided mock data.",
+                "operationId": "save_2",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MockData"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully saved mock data.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-services/soap/{pth}": {
+            "get": {
+                "tags": ["Mock Services"],
+                "summary": "Capture SOAP WSDL request",
+                "description": "Captures a SOAP WSDL request and returns the response.",
+                "operationId": "captureSoapWsdlRequest",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "text/html": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "404": {
+                        "description": "WSDL not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Mock Services"],
+                "summary": "Capture SOAP request",
+                "description": "Captures a SOAP request and returns the response.",
+                "operationId": "captureSoap",
+                "parameters": [{
+                        "name": "pth",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/xml": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-services/custom-request": {
+            "post": {
+                "tags": ["Mock Services"],
+                "summary": "Handle custom request",
+                "description": "Processes a custom request and returns the response.",
+                "operationId": "customRequest",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomRequestRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-profiles/save": {
+            "post": {
+                "tags": ["Mock Profiles"],
+                "summary": "Save mock profile",
+                "description": "Save provided mock profile data.",
+                "operationId": "save_3",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MockProfile"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully saved mock profile.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/interfaces/save": {
+            "post": {
+                "tags": ["Interfaces"],
+                "summary": "Save interface",
+                "description": "Save provided interface data.",
+                "operationId": "save_4",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Interface"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully saved interface.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/globalconfig/save": {
+            "post": {
+                "tags": ["Globalconfig"],
+                "summary": "Save global configuration",
+                "description": "Save the provided global configuration data.",
+                "operationId": "save_5",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BaseData"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Global configuration saved successfully.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/tenants/save": {
+            "post": {
+                "tags": ["Tenants"],
+                "summary": "Saves tenant data",
+                "description": "Saves tenant data provided in the request",
+                "operationId": "save_6",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SaveRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tenant data saved successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SaveResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/logout": {
+            "post": {
+                "tags": ["System"],
+                "summary": "Logs out the user",
+                "description": "Performs user logout operation",
+                "operationId": "logout",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/login": {
+            "post": {
+                "tags": ["System"],
+                "summary": "Logs in the user",
+                "description": "Performs user login operation",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/import-data": {
+            "post": {
+                "tags": ["System"],
+                "summary": "Import data",
+                "description": "Import interfaces and methods",
+                "operationId": "importData",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "apiBaseData",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/BaseData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data imported successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/boot": {
+            "post": {
+                "tags": ["System"],
+                "summary": "Boots the system",
+                "description": "Performs system boot",
+                "operationId": "boot",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "System booted successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/records": {
+            "get": {
+                "tags": ["Records"],
+                "summary": "Load all records",
+                "description": "Returns a list of all records. Normally returns HTTP 200, but may return HTTP 500 in case of errors.",
+                "operationId": "loadAll",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "load_count",
+                        "in": "query",
+                        "description": "Maximum number of records to load",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }, {
+                        "name": "last_loaded_id",
+                        "in": "query",
+                        "description": "ID of the last loaded record",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }, {
+                        "name": "record_session_id",
+                        "in": "query",
+                        "description": "Session ID for the records",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Records successfully loaded",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/records/{id}": {
+            "get": {
+                "tags": ["Records"],
+                "summary": "Load a record by ID",
+                "description": "Returns a single record based on the provided ID. Normally returns HTTP 200, but may return HTTP 500 in case of errors.",
+                "operationId": "load",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the record to load",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Record successfully loaded",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/record-sessions": {
+            "get": {
+                "tags": ["Record Sessions"],
+                "summary": "Load sessions",
+                "description": "Returns a list of record sessions. Normally returns HTTP 200, but may return HTTP 500.",
+                "operationId": "loadSessions",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sessions loaded successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadSessionsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadSessionsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/record-config/{id}": {
+            "get": {
+                "tags": ["RecordConfig"],
+                "summary": "Load Record Config",
+                "description": "Load a record configuration by its ID.",
+                "operationId": "load_1",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the record configuration",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded record configuration",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mockdata/{id}": {
+            "get": {
+                "tags": ["MockData"],
+                "summary": "Load mock data by ID",
+                "description": "Fetch mock data using the provided ID.",
+                "operationId": "load_2",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the mock data to load",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded mock data.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-profiles": {
+            "get": {
+                "tags": ["Mock Profiles"],
+                "summary": "Load all mock profiles",
+                "description": "Fetch all mock profiles with pagination.",
+                "operationId": "loadAll_1",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "load_count",
+                        "in": "query",
+                        "description": "Number of profiles to load",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }, {
+                        "name": "last_loaded_id",
+                        "in": "query",
+                        "description": "Last loaded profile ID for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded all mock profiles.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-profiles/{name}/mockdata": {
+            "get": {
+                "tags": ["Mock Profiles"],
+                "summary": "Load mock data for mock profile by name or ID",
+                "description": "Fetch mock data using mock profile ID or name.",
+                "operationId": "loadMockData",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "name",
+                        "in": "path",
+                        "description": "ID or name of the mock profile",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded mock data.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadMockDataResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadMockDataResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-profiles/{id}": {
+            "get": {
+                "tags": ["Mock Profiles"],
+                "summary": "Load mock profile by ID",
+                "description": "Fetch mock profile using the provided ID.",
+                "operationId": "load_3",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the mock profile to load",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded mock profile.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/interfaces/{id}": {
+            "get": {
+                "tags": ["Interfaces"],
+                "summary": "Load interface by ID",
+                "description": "Fetch interface using the provided ID.",
+                "operationId": "load_4",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the interface to load",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded interface.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/interfaces/{i_id}/methods/{m_id}/records": {
+            "get": {
+                "tags": ["Interfaces"],
+                "summary": "Load records for a method",
+                "description": "Fetch records for the specified method of an interface.",
+                "operationId": "loadRecordsForInterfaceMethod",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "i_id",
+                        "in": "path",
+                        "description": "ID of the interface",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }, {
+                        "name": "m_id",
+                        "in": "path",
+                        "description": "ID of the method",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded records.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/interfaces/{i_id}/methods/{m_id}/recordconfigs": {
+            "get": {
+                "tags": ["Interfaces"],
+                "summary": "Load record configs for a method",
+                "description": "Fetch record configurations for the specified method.",
+                "operationId": "loadMethodRecordConfigs",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "i_id",
+                        "in": "path",
+                        "description": "ID of the interface",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }, {
+                        "name": "m_id",
+                        "in": "path",
+                        "description": "ID of the method",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded record configs.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadRecordConfigsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadRecordConfigsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/interfaces/{i_id}/methods/{m_id}/mockdata": {
+            "get": {
+                "tags": ["Interfaces"],
+                "summary": "Load mock data for a method",
+                "description": "Fetch mock data for the specified method.",
+                "operationId": "loadMethodMockData",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "i_id",
+                        "in": "path",
+                        "description": "ID of the interface",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }, {
+                        "name": "m_id",
+                        "in": "path",
+                        "description": "ID of the method",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded method mock data.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadMockDataResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadMockDataResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/tenants": {
+            "get": {
+                "tags": ["Tenants"],
+                "summary": "Loads all tenants",
+                "description": "Retrieves all tenants data",
+                "operationId": "loadAll_2",
+                "responses": {
+                    "200": {
+                        "description": "Tenants data loaded successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadAllResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/state": {
+            "get": {
+                "tags": ["System"],
+                "summary": "Gets the system state",
+                "description": "Retrieves the current state of the system",
+                "operationId": "getState",
+                "responses": {
+                    "200": {
+                        "description": "System state retrieved successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/state-subsystem/{subsystem}": {
+            "get": {
+                "tags": ["System"],
+                "summary": "Gets the state of a subsystem",
+                "description": "Retrieves the state of a specified subsystem",
+                "operationId": "getStateSubsystem",
+                "parameters": [{
+                        "name": "subsystem",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subsystem state retrieved successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid subsystem specified",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/system/load-basedata": {
+            "get": {
+                "tags": ["System"],
+                "summary": "Loads base data",
+                "description": "Loads base system data",
+                "operationId": "loadBaseData",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Base data loaded successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadBaseDataResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoadBaseDataResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/records/{id}/delete": {
+            "delete": {
+                "tags": ["Records"],
+                "summary": "Delete a record by ID",
+                "description": "Deletes a record based on the provided ID. Normally returns HTTP 200, but may return HTTP 500 in case of errors.",
+                "operationId": "delete",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the record to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Record successfully deleted",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/records/delete": {
+            "delete": {
+                "tags": ["Records"],
+                "summary": "Delete all records",
+                "description": "Deletes all records. Normally returns HTTP 200, but may return HTTP 500 in case of errors.",
+                "operationId": "deleteAll",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Records successfully deleted",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/record-sessions/{id}/delete": {
+            "delete": {
+                "tags": ["Record Sessions"],
+                "summary": "Delete session",
+                "description": "Deletes a record session by ID. Normally returns HTTP 200, but may return HTTP 500.",
+                "operationId": "delete_1",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Session ID to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session deleted successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/record-config/{id}/delete": {
+            "delete": {
+                "tags": ["RecordConfig"],
+                "summary": "Delete Record Config",
+                "description": "Delete a record configuration by its ID.",
+                "operationId": "delete_2",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the record configuration",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted record configuration",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mockdata/{id}/delete": {
+            "delete": {
+                "tags": ["MockData"],
+                "summary": "Delete mock data by ID",
+                "description": "Delete mock data using the provided ID.",
+                "operationId": "delete_3",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the mock data to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted mock data.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/mock-profiles/{id}/delete": {
+            "delete": {
+                "tags": ["Mock Profiles"],
+                "summary": "Delete mock profile by ID",
+                "description": "Delete mock profile using the provided ID.",
+                "operationId": "delete_4",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the mock profile to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted mock profile.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/interfaces/{id}/delete": {
+            "delete": {
+                "tags": ["Interfaces"],
+                "summary": "Delete interface by ID",
+                "description": "Delete interface using the provided ID.",
+                "operationId": "delete_5",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization token for validation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the interface to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted interface.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mosy/api/v_5_0/tenants/{id}/delete": {
+            "delete": {
+                "tags": ["Tenants"],
+                "summary": "Deletes a tenant",
+                "description": "Deletes the tenant with the specified ID",
+                "operationId": "delete_6",
+                "parameters": [{
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant deleted successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmptyResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ResponseMessage": {
+                "type": "object",
+                "properties": {
+                    "responseCode": {
+                        "type": "string",
+                        "enum": ["ACCESS_DENIED", "INVALID_INPUT_PARAMS", "DATA_ALREADY_EXISTS", "DATA_DOESNT_EXIST", "INVALID_CREDENTIALS", "UNEXPECTED_ERROR", "OPERATION_FAILED_ERROR", "DELETE_NOT_POSSIBLE_CAUSE_OF_DEPENDENT_DATA", "OPERATION_NOT_POSSIBLE", "NO_DATA_CHANGED", "OPERATION_FAILED_INFO", "DATA_SET"]
+                    },
+                    "additionalInfos": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "xml": {
+                                "name": "additionalInfos"
+                            }
+                        }
+                    },
+                    "fullMessage": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SaveResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "recordID": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "Interface": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "interfaceId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["SOAP", "REST", "CUSTOM_XML", "CUSTOM_JSON", "CUSTOM_PLAIN"]
+                    },
+                    "servicePath": {
+                        "type": "string"
+                    },
+                    "mockActiveOnStartup": {
+                        "type": "boolean"
+                    },
+                    "mockActive": {
+                        "type": "boolean"
+                    },
+                    "routingUrl": {
+                        "type": "string"
+                    },
+                    "routingOnNoMockData": {
+                        "type": "boolean"
+                    },
+                    "methods": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/InterfaceMethod"
+                        }
+                    },
+                    "record": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "InterfaceMethod": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "interfaceMethodId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "servicePath": {
+                        "type": "string"
+                    },
+                    "httpMethod": {
+                        "type": "string",
+                        "enum": ["GET", "PUT", "POST", "DELETE"]
+                    },
+                    "routingOnNoMockData": {
+                        "type": "boolean"
+                    },
+                    "mockActiveOnStartup": {
+                        "type": "boolean"
+                    },
+                    "mockActive": {
+                        "type": "boolean"
+                    },
+                    "countCalls": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "interfaceId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "interfaceName": {
+                        "type": "string"
+                    },
+                    "interfaceType": {
+                        "type": "string",
+                        "enum": ["SOAP", "REST", "CUSTOM_XML", "CUSTOM_JSON", "CUSTOM_PLAIN"]
+                    },
+                    "record": {
+                        "type": "boolean"
+                    },
+                    "mockData": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MockData"
+                        }
+                    },
+                    "recordConfigs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecordConfig"
+                        }
+                    },
+                    "mockInterfaceData": {
+                        "$ref": "#/components/schemas/Interface",
+                        "writeOnly": true
+                    }
+                }
+            },
+            "MockData": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "mockDataId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "common": {
+                        "type": "boolean"
+                    },
+                    "countCalls": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "interfaceMethod": {
+                        "$ref": "#/components/schemas/InterfaceMethod"
+                    },
+                    "pathParams": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PathParam"
+                        }
+                    },
+                    "urlArguments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UrlArgument"
+                        }
+                    },
+                    "request": {
+                        "type": "string"
+                    },
+                    "response": {
+                        "type": "string"
+                    },
+                    "httpReturnCode": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "requestHash": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "responseHash": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "delay": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "mockProfiles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MockProfile"
+                        }
+                    },
+                    "requestResponseByFileContent": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                }
+            },
+            "MockProfile": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "mockProfileID": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "persistent": {
+                        "type": "boolean"
+                    },
+                    "useCommonMocks": {
+                        "type": "boolean"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PathParam": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Record": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "recordId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "interfaceMethod": {
+                        "$ref": "#/components/schemas/InterfaceMethod"
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "pathParams": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PathParam"
+                        }
+                    },
+                    "urlArguments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UrlArgument"
+                        }
+                    },
+                    "requestData": {
+                        "type": "string"
+                    },
+                    "response": {
+                        "type": "string"
+                    },
+                    "httpReturnCode": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "recordSession": {
+                        "$ref": "#/components/schemas/RecordSession"
+                    }
+                }
+            },
+            "RecordConfig": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "recordConfigId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "mockInterface": {
+                        "$ref": "#/components/schemas/Interface"
+                    },
+                    "interfaceMethod": {
+                        "$ref": "#/components/schemas/InterfaceMethod"
+                    },
+                    "requestData": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "RecordSession": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "recordSessionID": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "UrlArgument": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CreateResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "recordSession": {
+                        "$ref": "#/components/schemas/RecordSession"
+                    }
+                }
+            },
+            "CustomRequestRequest": {
+                "type": "object",
+                "properties": {
+                    "interfaceName": {
+                        "type": "string"
+                    },
+                    "interfaceMethod": {
+                        "type": "string"
+                    },
+                    "request": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BaseData": {
+                "type": "object",
+                "description": "Global configuration data to be saved",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "mockActiveOnStartup": {
+                        "type": "boolean"
+                    },
+                    "mockActive": {
+                        "type": "boolean"
+                    },
+                    "routingOnNoMockData": {
+                        "type": "boolean"
+                    },
+                    "ttlMockProfile": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ttlRecordSession": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "record": {
+                        "type": "boolean"
+                    },
+                    "interfaces": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Interface"
+                        }
+                    },
+                    "countRecordSessions": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "countMockProfiles": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "countRecords": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "EmptyResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    }
+                }
+            },
+            "SaveRequest": {
+                "type": "object",
+                "properties": {
+                    "tenant": {
+                        "$ref": "#/components/schemas/Tenant"
+                    },
+                    "secretHash": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "Tenant": {
+                "type": "object",
+                "properties": {
+                    "delete": {
+                        "type": "boolean"
+                    },
+                    "tenantId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "secretHash": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "tenantId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "tenantName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoginResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoadAllResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "records": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Record"
+                        }
+                    }
+                }
+            },
+            "LoadResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "record": {
+                        "$ref": "#/components/schemas/Record"
+                    }
+                }
+            },
+            "LoadSessionsResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "recordSessions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecordSession"
+                        }
+                    }
+                }
+            },
+            "LoadMockDataResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "mockData": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MockData"
+                        }
+                    }
+                }
+            },
+            "LoadRecordConfigsResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "recordConfigs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecordConfig"
+                        }
+                    }
+                }
+            },
+            "LoadBaseDataResponse": {
+                "type": "object",
+                "properties": {
+                    "stateOK": {
+                        "type": "boolean"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ResponseMessage"
+                        }
+                    },
+                    "baseData": {
+                        "$ref": "#/components/schemas/BaseData"
+                    }
+                }
+            }
+        }
+    }
+}
