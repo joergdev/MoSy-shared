@@ -657,7 +657,7 @@ The following Properties can be defined as system properties, environment proper
 <a name="a23"/>
 <p><strong><u>Runtime environments &ndash; Spring Boot</u></strong></p>
 <p>Spring-boot Version: 3.4.3</p>
-<p>Java Version: 21 (since 5.0.0, before 8)</p>
+<p>Java Version: 21 (since 5.1.0, before 8)</p>
 <br/>
 <p><u>Projects:</u></p>
 <ul>
@@ -674,7 +674,7 @@ The following Properties can be defined as system properties, environment proper
                 </ul>
               </ul>
             </li>
-            <li>log4j.xml</li>
+            <li>log4j2.xml</li>
           </li>
         </ul>
       </li>
@@ -698,7 +698,7 @@ The following Properties can be defined as system properties, environment proper
               </ul>
             </ul>
           </li>
-          <li>log4j.xml</li>
+          <li>log4j2.xml</li>
         </ul>
       </li>
     </ul>
